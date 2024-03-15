@@ -2,7 +2,7 @@ import { FaqsType } from "dh-marvel/components/faqs/faqsData";
 
 export const getFaqs = async () => {
     const urlVercel = `https://ctd-esp-fe3-final-eta-one.vercel.app`
-    const urlLocal = `http://localhost:3000`
+    /*const urlLocal = `http://localhost:3000`*/
     try {
         const response = await fetch(`${urlVercel}/api/preguntas-frecuentes`);
         if (!response.ok) {

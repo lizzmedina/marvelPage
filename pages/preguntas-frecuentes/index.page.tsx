@@ -1,4 +1,4 @@
-import { FaqsType, faqsData } from "dh-marvel/components/faqs/faqsData";
+import { FaqsType } from "dh-marvel/components/faqs/faqsData";
 import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
 import { GetStaticProps, NextPage } from "next";
 import { Box, Typography } from "@mui/material";
@@ -12,8 +12,6 @@ interface FaqsPageProps {
     faqs: FaqsType[];
 };
 const FaqsPage: NextPage<FaqsPageProps> = ({faqs}) => {
-    //const router = useRouter();
-    //const faqsContent: { [key: string]: any } = router.locale === "es" ? faqsContentEs : faqsContentEn; 
     
     return (
         <LayoutGeneral title='faqs page' description='some frequent questions about amiibo website.' keywords='faqs'>
@@ -41,9 +39,7 @@ const FaqsPage: NextPage<FaqsPageProps> = ({faqs}) => {
     );
 };
 
-    export const getStaticProps: GetStaticProps = async (ctx) => {
-        console.log('log antes del try');
-        
+export const getStaticProps: GetStaticProps = async (ctx) => {        
         try {
             const faqs = await getFaqs();
             return {
@@ -59,5 +55,5 @@ const FaqsPage: NextPage<FaqsPageProps> = ({faqs}) => {
                 },
             }
         }
-    }
+}
 export default FaqsPage;
