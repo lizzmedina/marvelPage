@@ -6,7 +6,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getFaqs } from "dh-marvel/services/methods/getFaqs";
+import { getFaqs } from "dh-marvel/services/methods/getFaqs.service";
 
 interface FaqsPageProps {
     faqs: FaqsType[];
