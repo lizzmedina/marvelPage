@@ -10,9 +10,21 @@ import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 
 interface FaqsPageProps {
     faqs: FaqsType[];
+    error?: Error
 };
-const FaqsPage: NextPage<FaqsPageProps> = ({faqs}) => {
-    
+const FaqsPage: NextPage<FaqsPageProps> = ({faqs, error}) => {
+    if (error instanceof Error) {
+        return (
+            <LayoutGeneral title='faqs page' description='some frequent questions about amiibo website.' keywords='faqs'>
+            <Box sx={{ width: "80%", margin: "auto"}}>
+            <BodySingle title="Preguntas frecuentes (FAQs)">
+                <Typography component='p'>{error.message}</Typography>
+            </BodySingle>    
+                
+            </Box>            
+        </LayoutGeneral>
+        );
+    }
     return (
         <LayoutGeneral title='faqs page' description='some frequent questions about amiibo website.' keywords='faqs'>
             <Box sx={{ width: "80%", margin: "auto"}}>
