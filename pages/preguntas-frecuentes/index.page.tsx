@@ -1,53 +1,27 @@
-import { FaqsType, faqsData } from "dh-marvel/components/faqs/faqsData";
+import { FaqsType } from "dh-marvel/components/faqs/faqsData";
 import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
 import { GetStaticProps, NextPage } from "next";
-import { Box, Typography } from "@mui/material";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
+import { Box } from "@mui/material";
+import { Faqs } from "dh-marvel/components/faqs/Faqs";
+import { FaqsErrorFetch } from "dh-marvel/components/faqs/FaqsErrorFetch";
 
 interface FaqsPageProps {
     faqs: FaqsType[];
     error?: Error
 };
 const FaqsPage: NextPage<FaqsPageProps> = ({faqs, error}) => {
+
     if (error instanceof Error) {
         return (
             <LayoutGeneral title='faqs page' description='some frequent questions about amiibo website.' keywords='faqs'>
-            <Box sx={{ width: "80%", margin: "auto"}}>
-            <BodySingle title="Preguntas frecuentes (FAQs)">
-                <Typography component='p'>{error.message}</Typography>
-            </BodySingle>    
-                
-            </Box>            
+                <FaqsErrorFetch error={error}/>
         </LayoutGeneral>
         );
     }
     return (
         <LayoutGeneral title='faqs page' description='some frequent questions about amiibo website.' keywords='faqs'>
             <Box sx={{ width: "80%", margin: "auto"}}>
-            <BodySingle title="Preguntas frecuentes (FAQs)">
-                {faqs.map((faq) => (
-                    <Box key={faq.id} sx={{ width: "100%", margin: 'auto' }}>
-                        <Accordion>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
-                                sx={{ fontWeight: 'bold' }}
-                            >
-                                {faq.question}                       
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                {faq.answer}
-                            </AccordionDetails>
-                        </Accordion>
-                    </Box>
-            ))}
-            </BodySingle>    
-                
+                <Faqs faqs={faqs}/>
             </Box>            
         </LayoutGeneral>
     );
@@ -60,8 +34,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
             if (!response.ok) {
                 throw new Error('La solicitud de FAQs no fue exitosa');
             }
-            const faqs: FaqsType[] = await response.json();
-            
+            const faqs: FaqsType[] = await response.json();            
             return {
                 props: {
                     faqs
