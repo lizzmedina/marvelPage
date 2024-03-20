@@ -14,8 +14,7 @@ interface IndexProps {
 
 const itemsPerPage = 12;
 
-const HomePage: NextPage<IndexProps> = ({ marvelCards, comics }) => {
-    console.log('from home ', comics);
+const HomePage: NextPage<IndexProps> = ({ marvelCards, comics }) => {    
     
     return (
         <LayoutGeneral title='homePage marvel comics' description='pagina principal marvel comics' keywords='home'>
