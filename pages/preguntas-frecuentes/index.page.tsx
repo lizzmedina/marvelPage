@@ -28,7 +28,9 @@ const FaqsPage: NextPage<FaqsPageProps> = ({faqs, error}) => {
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {    
-    const urlVercel = `https://ctd-esp-fe3-final-eta-one.vercel.app`    
+    const urlVercel = `https://marvelpage-lizzmedinas-projects.vercel.app/`   
+    
+    //https://ctd-esp-fe3-final-eta-one.vercel.app
         try {            
             const response = await fetch(`${urlVercel}/api/preguntas-frecuentes`);
             if (!response.ok) {
