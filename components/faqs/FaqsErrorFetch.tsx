@@ -9,7 +9,7 @@ export const FaqsErrorFetch = ({error}:FaqsErrorProps) => {
     return (
         <Box sx={{ width: "80%", margin: "auto"}}>
             <BodySingle title="Preguntas frecuentes (FAQs)">
-                <Typography component='p'>{error.message}</Typography>
+                <Typography color='error' component='p'>{error.message}</Typography>
             </BodySingle>                    
         </Box>         
     )
