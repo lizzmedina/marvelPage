@@ -6,7 +6,7 @@ interface HomeProps {
 }
 
 const GridCardsForHome: React.FC<HomeProps> = ({ comics}) => {
-    console.log('homecomponent' , comics);
+    
     
     return(
         <Container>
