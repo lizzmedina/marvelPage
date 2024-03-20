@@ -1,4 +1,4 @@
-import {generateAuthenticationString} from "dh-marvel/services/marvel/marvel-auth.service";
+import { generateAuthenticationString } from "dh-marvel/services/marvel/marvel-auth.service";
 
 const MARVEL_API_URL = process.env.MARVEL_API_URL;
 
@@ -11,8 +11,8 @@ const fetchApi = async (endpoint: string, urlParams?: string) => {
 
 export const getComics = async (offset?: number, limit?: number) => {
     const params = new URLSearchParams();
-    if (offset) params.set("offset", `${offset}`);
-    if (limit) params.set("limit", `${limit}`);
+    if (offset !== undefined) params.set("offset", `${offset}`);
+    if (limit !== undefined) params.set("limit", `${limit}`);
     return fetchApi("comics", params.toString());
 }
 
