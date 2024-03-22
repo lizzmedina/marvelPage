@@ -7,7 +7,7 @@
         data: Data;
         etag: string;
     }
-    
+
     export interface IComic extends Result {
         price: number;
         oldPrice: number;
