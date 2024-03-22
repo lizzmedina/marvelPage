@@ -28,7 +28,7 @@ export const CardComic = ({ comic }: ComicProps) => {
         <BodySingle title='Detalle del comic'>
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={6}>
-                    <Card sx={{ width: '80%', maxWidth: '100%' }}>
+                <Card sx={{ width: '80%', maxWidth: '100%', minHeight: 400 }}>
                         <CardContent sx={{ height: expandedDescription || expandedCharacters ? 'auto' : 'auto', overflow: 'auto' }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={6}>
@@ -50,30 +50,29 @@ export const CardComic = ({ comic }: ComicProps) => {
                                         <Divider sx={{ marginY: 2, borderColor: "primary" }} />
                                         <Typography variant="subtitle1" sx={{ fontSize: isMobile ? 14 : 15, fontWeight: 'bold' }}>
                                             Descripción                                            
-                                        </Typography>
-                                            <Typography gutterBottom variant="body1" component="div" sx={{ fontSize: isMobile ? 13: 14 }}>
-                                                {comic.description === null || comic.description === "" ? (
-                                                    <Typography sx={{ fontSize: isMobile ? 12 : 15 }}>Sin descripción disponible</Typography>) : (
-                                                    <Typography gutterBottom variant="body1" component="div" sx={{ fontSize: isMobile ? 10 : 12 }}>
-                                                        {comic.description}
-                                                    </Typography>
-                                                )}
-                                            </Typography>
+                                        </Typography>                                        
+                                            {comic.description ? (
+                                                <Typography sx={{ fontSize: isMobile ? 12 : 15 }}>{comic.description}</Typography>
+                                            ) : (
+                                                <Typography sx={{ fontSize: isMobile ? 12 : 15 }}>Sin descripción disponible</Typography>
+                                            )}                                        
                                         <Divider sx={{ marginY: 2, borderColor: "primary" }} />
                                         <Typography sx={{ fontSize: isMobile ? 14 : 15, fontWeight: 'bold'  }} variant="subtitle1">
-                                            Personajes                                            
-                                        </Typography>                                        
-                                            {comic.characters.items.length > 0 ? (
-                                                <Grid container sx={{ display: "flex", paddingLeft: "0", flexWrap: "wrap" }}>
-                                                    {comic.characters.items.map((character, i) => (
-                                                        <Grid item key={i} style={{ listStyleType: "none", marginRight: 10 }}>
-                                                            <Link href={`/characters/${character.resourceURI.split("/").pop()}`} passHref>
-                                                                <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
-                                                            </Link>
-                                                        </Grid>
-                                                    ))}
-                                                </Grid>
-                                            ) : (<Typography  sx={{ fontSize: isMobile ? 10 : 12 }}>Sin personajes </Typography>)}                                        
+                                            Personajes       
+                                        </Typography>           
+                                        {comic.characters.items.length > 0 ? (
+                                            <Grid container sx={{ display: "flex", paddingLeft: "0", flexWrap: "wrap" }}>
+                                                {comic.characters.items.map((character, i) => (
+                                                    <Grid item key={i} style={{ listStyleType: "none", marginRight: 10 }}>
+                                                        <Link href={`/characters/${character.resourceURI.split("/").pop()}`} passHref>
+                                                            <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
+                                                        </Link>
+                                                    </Grid>
+                                                ))}
+                                            </Grid>
+                                        ) : (
+                                            <Typography  sx={{ fontSize: isMobile ? 10 : 12 }}>Sin personajes </Typography>
+                                        )}     
                                     </Box>
                                     <CardActions sx={{ marginTop: 'auto', justifyContent: 'flex-end', padding: 2 }}>
                             <Button
