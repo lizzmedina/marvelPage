@@ -4,6 +4,7 @@ import { GetStaticProps, NextPage } from "next";
 import { Box } from "@mui/material";
 import { Faqs } from "dh-marvel/components/faqs/Faqs";
 import { FaqsErrorFetch } from "dh-marvel/components/faqs/FaqsErrorFetch";
+import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 
 interface FaqsPageProps {
     faqs: FaqsType[];
@@ -20,17 +21,17 @@ const FaqsPage: NextPage<FaqsPageProps> = ({faqs, error}) => {
     }
     return (
         <LayoutGeneral title='faqs page' description='some frequent questions about amiibo website.' keywords='faqs'>
-            <Box sx={{ width: "80%", margin: "auto"}}>
+                <Box sx={{ width: "80%", margin: "auto"}}>
                 <Faqs faqs={faqs}/>
-            </Box>            
+            </Box>                  
         </LayoutGeneral>
     );
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {    
-    const urlVercel = `https://marvelpage-lizzmedinas-projects.vercel.app/`   
-    
+    const urlVercel = `https://marvelpage-lizzmedinas-projects.vercel.app/`     
     //https://ctd-esp-fe3-final-eta-one.vercel.app
+    
         try {            
             const response = await fetch(`${urlVercel}/api/preguntas-frecuentes`);
             if (!response.ok) {

@@ -4,13 +4,22 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useRouter } from "next/router";
 
 export interface CardHomeProps {
     id: number;
     title: string;
     image: string;
 }
-const CardHome: React.FC<CardHomeProps> = ({ image, title }) => {
+const CardHome: React.FC<CardHomeProps> = ({ image, title, id }) => {
+    console.log('nombre ', title);
+    console.log('id ', id);
+
+    const router = useRouter();
+
+    const handleComicDetail = () => {
+        router.push(`/comics/${id}`);
+    };
 
     return (
         <Card sx={{ maxWidth: 345, height: "100%", display: "flex",  justifyContent: "space-between",  flexDirection: "column" }}>
@@ -36,8 +45,13 @@ const CardHome: React.FC<CardHomeProps> = ({ image, title }) => {
                                 backgroundColor: 'white', color:'#e23636', border:'1px solid #e23636', }
                         }}
                 > Comprar</Button>
-                <Button size="small" sx={{fontWeight: 'bold', '&:hover': {backgroundColor: '#bdbdbd',   }  }} color='primary' >Ver Detalle</Button>
-
+                <Button  
+                    onClick={handleComicDetail} 
+                    size="small" 
+                    sx={{fontWeight: 'bold', '&:hover': {backgroundColor: '#bdbdbd',   }  }} 
+                    color='primary' 
+                >Ver Detalle                 
+                </Button>
             </CardActions>
         </Card>
     )
