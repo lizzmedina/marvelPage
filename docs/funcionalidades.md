@@ -74,7 +74,6 @@ Se deberá tener en cuenta lo siguiente:
 
 Al seleccionar el botón comprar en la página de detalle de cómic, se deberá navegar a la página de compra (checkout). 
 
-
 Se deberá tener en cuenta lo siguiente:
 * Deberá estar en la ruta `/checkout`.
 * La página deberá disponer de un formulario dividido en 3 secciones o pasos:

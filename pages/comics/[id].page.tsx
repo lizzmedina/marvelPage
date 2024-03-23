@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { CardComic } from "dh-marvel/components/comics/CardComic";
 import ErrorPage from "dh-marvel/components/error/ErrorMessage";
 import LayoutGeneral from "dh-marvel/components/layouts/layout-general";
@@ -21,7 +21,11 @@ const ComicPage: NextPage<ComicProps & { error?: string }> = ({ comic, error  })
     if (!comic || Object.keys(comic).length === 0) {
         return <ErrorPage />;
     };
-    
+
+    const handleCharactersDetail = (characterId: number) => {
+        router.push(`/personajes/${characterId}`);
+    };
+
     return (
         <LayoutGeneral title={`Comic ${comic.title}`} description="">
             <CardComic comic={comic}/>

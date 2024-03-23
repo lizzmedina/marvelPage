@@ -269,7 +269,7 @@ describe("ComicPage", () => {
             (getComic as jest.Mock).mockResolvedValue("Comic not found");
     
             render(<ComicPage comic={mockEmptyComic} error=""/>);
-            screen.debug();
+            
             expect(screen.getByText("Sin descripción disponible")).toBeInTheDocument();
             expect(screen.getByText("Sin personajes")).toBeInTheDocument();
         });

@@ -1,34 +1,35 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Divider, Grid, Typography, useMediaQuery, useTheme, IconButton, Collapse } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Divider, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
-import Link from "next/link";
-import { IComic } from "interface/comics";
+import {  IComic } from "interface/comics";
 import { useState } from "react";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface ComicProps {
     comic: IComic;
 }
 
-export const CardComic = ({ comic }: ComicProps) => {
+export const CardComic = ({ comic  }: ComicProps) => {
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [expandedDescription, setExpandedDescription] = useState(false);
     const [expandedCharacters, setExpandedCharacters] = useState(false);
+    const router = useRouter();
 
-    const handleExpandDescriptionClick = () => {
-        setExpandedDescription(!expandedDescription);
-    };
-
-    const handleExpandCharactersClick = () => {
-        setExpandedCharacters(!expandedCharacters);
+    // console.log('comic ', comic);
+    // console.log('comic.characters.items ' ,comic.characters.items);
+    // console.log('comic.resourceURI.split("/").pop() ', comic.resourceURI.split("/").pop());
+    
+    const handleCharactersDetail = (characterId: number) => {
+        router.push(`/personajes/${characterId}`);
     };
 
     return (
         <BodySingle title='Detalle del comic'>
             <Grid container justifyContent="center">
                 <Grid item xs={12} md={6}>
-                <Card sx={{ width: '80%', maxWidth: '100%', minHeight: 400 }}>
+                <Card sx={{ width: '80%', minHeight: 400, justifyContent:'center'}}>
                         <CardContent sx={{ height: expandedDescription || expandedCharacters ? 'auto' : 'auto', overflow: 'auto' }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={6}>
@@ -59,20 +60,23 @@ export const CardComic = ({ comic }: ComicProps) => {
                                         <Divider sx={{ marginY: 2, borderColor: "primary" }} />
                                         <Typography sx={{ fontSize: isMobile ? 14 : 15, fontWeight: 'bold'  }} variant="subtitle1">
                                             Personajes       
-                                        </Typography>           
-                                        {comic.characters.items.length > 0 ? (
+                                        </Typography>      
+                                        <CardActions>
+                                            {comic.characters.items.length > 0 ? (
                                             <Grid container sx={{ display: "flex", paddingLeft: "0", flexWrap: "wrap" }}>
                                                 {comic.characters.items.map((character, i) => (
-                                                    <Grid item key={i} style={{ listStyleType: "none", marginRight: 10 }}>
-                                                        <Link href={`/characters/${character.resourceURI.split("/").pop()}`} passHref>
-                                                            <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
-                                                        </Link>
-                                                    </Grid>
+                                                <Grid item key={i} style={{ listStyleType: "none", marginRight: 10 }}>
+                                                <Link href={`/personajes/${character.resourceURI.split("/").pop()}`}passHref>
+                                                        <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
+                                                </Link>
+                                                </Grid>
+                                            
                                                 ))}
                                             </Grid>
                                         ) : (
                                             <Typography  sx={{ fontSize: isMobile ? 10 : 12 }}>Sin personajes </Typography>
                                         )}     
+                                        </CardActions>     
                                     </Box>
                                     <CardActions sx={{ marginTop: 'auto', justifyContent: 'flex-end', padding: 2 }}>
                             <Button
@@ -101,3 +105,20 @@ export const CardComic = ({ comic }: ComicProps) => {
         </BodySingle>
     )
 }
+
+
+                                                    {/*<Grid item key={i} style={{ listStyleType: "none", marginRight: 10 }}>
+                                                    <Link href={`/personajes/${character.resourceURI.split("/").pop()}`} passHref>
+                                                            <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
+                                                        </Link>
+                                                    </Grid>*/}
+                                                
+                                                    {/*<Button 
+                                                    key={i} 
+                                                    onClick={() => handleCharacterDetail()} 
+                                                    size="small" 
+                                                    sx={{ '&:hover': {backgroundColor: '#bdbdbd',   } }} 
+                                                    color='primary' 
+                                                >
+                                                    <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
+                                                    </Button>*/}
