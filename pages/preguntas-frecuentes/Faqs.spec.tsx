@@ -44,6 +44,7 @@ describe('Tests on FaqsPage', () => {
     test('should render error message when fetching FAQs fails', () => {        
             const errorMessage = 'La solicitud de FAQs no fue exitosa';
             render(<FaqsPage faqs={[]} error={new Error(errorMessage)} />);
+            
             const errorElement = screen.getByText(errorMessage);
             expect(errorElement).toBeInTheDocument();
         });

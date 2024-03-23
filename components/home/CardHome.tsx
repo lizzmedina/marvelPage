@@ -12,9 +12,6 @@ export interface CardHomeProps {
     image: string;
 }
 const CardHome: React.FC<CardHomeProps> = ({ image, title, id }) => {
-    console.log('nombre ', title);
-    console.log('id ', id);
-
     const router = useRouter();
 
     const handleComicDetail = () => {
