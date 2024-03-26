@@ -17,6 +17,9 @@ const CardHome: React.FC<CardHomeProps> = ({ image, title, id }) => {
     const handleComicDetail = () => {
         router.push(`/comics/${id}`);
     };
+    const handleComicBuy = () => {
+        router.push(`/checkout`);
+    };
 
     return (
         <Card sx={{ maxWidth: 345, height: "100%", display: "flex",  justifyContent: "space-between",  flexDirection: "column" }}>
@@ -33,6 +36,7 @@ const CardHome: React.FC<CardHomeProps> = ({ image, title, id }) => {
             <CardActions sx={{display:'flex', justifyContent:'space-between'  }}>
                 <Button 
                     size="small" 
+                    onClick={handleComicBuy} 
                     sx={{
                             fontWeight: 'bold', 
                             background: '#d50000', 

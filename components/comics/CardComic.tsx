@@ -9,7 +9,7 @@ interface ComicProps {
     comic: IComic;
 }
 
-export const CardComic = ({ comic  }: ComicProps) => {
+export const CardComic = ({ comic}: ComicProps) => {
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -17,14 +17,12 @@ export const CardComic = ({ comic  }: ComicProps) => {
     const [expandedCharacters, setExpandedCharacters] = useState(false);
     const router = useRouter();
 
-    // console.log('comic ', comic);
-    // console.log('comic.characters.items ' ,comic.characters.items);
-    // console.log('comic.resourceURI.split("/").pop() ', comic.resourceURI.split("/").pop());
-    
-    const handleCharactersDetail = (characterId: number) => {
-        router.push(`/personajes/${characterId}`);
+    const handleComicBuy = () => {
+        router.push(`/checkout`);
     };
-
+    const handleBack = () => {
+        router.back();
+    };
     return (
         <BodySingle title='Detalle del comic'>
             <Grid container justifyContent="center">
@@ -33,7 +31,20 @@ export const CardComic = ({ comic  }: ComicProps) => {
                         <CardContent sx={{ height: expandedDescription || expandedCharacters ? 'auto' : 'auto', overflow: 'auto' }}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} md={6}>
-                                    <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Box sx={{ height: '100%', display: 'flex', flexDirection:'column' , justifyContent: 'center' }}>
+                                        <CardActions sx={{  alignItems: 'flex-start', padding: 2 }}>
+                                            <Button
+                                                sx={{
+                                                    fontWeight: 'bold',
+                                                    color: 'white',
+                                                    border: '1px solid'
+                                                }}
+                                                onClick={handleBack}
+                                                variant="contained"
+                                            >
+                                                Atrás
+                                            </Button>
+                                        </CardActions>
                                         <CardMedia
                                             component="img"
                                             alt={comic.title}
@@ -79,26 +90,26 @@ export const CardComic = ({ comic  }: ComicProps) => {
                                         </CardActions>     
                                     </Box>
                                     <CardActions sx={{ marginTop: 'auto', justifyContent: 'flex-end', padding: 2 }}>
-                            <Button
-                                sx={{
-                                    fontWeight: 'bold',
-                                    background: '#d50000',
-                                    color: 'white',
-                                    border: '1px solid',
-                                    '&:hover': {
-                                        backgroundColor: 'white', color: '#e23636', border: '1px solid #e23636',
-                                    }
-                                }}
-                                disabled={comic.stock <= 0}
-                                variant="contained"
-                            >
-                                Comprar
-                            </Button>
-                        </CardActions>
+                                        <Button
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                background: '#d50000',
+                                                color: 'white',
+                                                border: '1px solid',
+                                                '&:hover': {
+                                                    backgroundColor: 'white', color: '#e23636', border: '1px solid #e23636',
+                                                }
+                                            }}
+                                            onClick={handleComicBuy}
+                                            disabled={comic.stock <= 0}
+                                            variant="contained"
+                                        >
+                                            Comprar
+                                        </Button>
+                                    </CardActions>
                                 </Grid>
                             </Grid>
-                        </CardContent>
-                        
+                        </CardContent>                        
                     </Card>
                 </Grid>
             </Grid>
