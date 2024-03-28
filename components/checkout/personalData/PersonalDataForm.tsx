@@ -1,6 +1,5 @@
 import { Box, TextField, Button, FormHelperText, Grid } from "@mui/material";
-import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
-import { useForm, Controller, SubmitHandler, useFormContext } from "react-hook-form";
+import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
 
 interface PersonalDataFormProps {
     handleNext: () => void;
@@ -8,10 +7,8 @@ interface PersonalDataFormProps {
 
 const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
 
-
     const { control, handleSubmit, formState: { errors } } =useFormContext();
         
-
     return (
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>

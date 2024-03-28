@@ -9,8 +9,6 @@ import { useRouter } from "next/router";
 import { IComic } from "interface/comics";
 import { getComic } from "dh-marvel/services/marvel/marvel.service";
 import CheckoutCard from "./CheckoutCard";
-import { postCheckOut } from "dh-marvel/services/checkout/checkout-pay.service";
-import { log } from "console";
 
     const steps = ["Personal Data", "Address Data", "Payment Data"];
 
@@ -38,7 +36,7 @@ import { log } from "console";
             image: string,
             price: number
         }    
-    }
+    };
     
     const defaultValues: DefaultValues = {
         customer: {
@@ -63,29 +61,8 @@ import { log } from "console";
             name: "",
             image: "",
             price: 0
-        }
-    
+        },    
     };
-interface PersonalData {
-        name: string;
-        lastname: string;
-        email: string;
-    }
-    
-    interface AddressData {
-        address1: string;
-        address2?: string | null;
-        city: string;
-        state: string;
-        zipCode: string;
-    }
-    
-    interface CardData {
-        number: string;
-        cvc: string;
-        expDate: string;
-        nameOnCard: string;
-    }
 
     const FormPay: React.FC = () => {
 
@@ -94,7 +71,7 @@ interface PersonalData {
     const methods = useForm<CheckoutInput>({defaultValues});
     const comicId = route.query.id as string;
     const [comicData, setComicData] = useState<IComic | null>(null);
-    const [checkoutData, setCheckoutData] = useState<DefaultValues>(defaultValues)
+    //const [checkoutData, setCheckoutData] = useState<DefaultValues>(defaultValues)
     const [query, setQuery] = useState(comicId);
 
     useEffect(() => {
@@ -113,58 +90,19 @@ interface PersonalData {
     const image = comicData?.thumbnail.path.concat(".", comicData?.thumbnail.extension)!
     const price = comicData?.price!
 
-    const order : typeof defaultValues.order = {
-        name,
-        image,
-        price
-    };
-    
-        const handleNext = () => {
+   const handleNext = () => {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         };
     
         const handleBack = () => {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         };
-        // const formatData = (data: DefaultValues) : CheckoutInput => {
-        //     const dataform = {
-        //         customer: {
-        //                         name: data.customer.name,
-        //                         lastname: data.lastname,
-        //                         email: data.email,
-        //                         address: {
-        //                             address1: data.address1,
-        //                             address2: data.address2,
-        //                             city: data.city,
-        //                             state: data.state,
-        //                             zipCode: data.zipCode,
-        //                         },
-        //         },
-        //                     card: {
-        //                         number: data.number,
-        //                         cvc: data.cvc,
-        //                         expDate: data.expDate,
-        //                         nameOnCard: data.nameOnCard,
-        //                     },
-        //                     order: {
-        //                         name: name,
-        //                         image: image,
-        //                         price: price,
-        //                     },
-        //     }
-            
-        // }
-        // }
 
         const handleBackCard = () => {
             route.back();
         };
-        // const handleFormSubmit = (data: CheckoutInput) => {
-        //     route.push(`/confirmacion-compra`);
-        // }
-        const handleFormSubmit = (data: CheckoutInput) => {
-            console.log({data});         
 
+        const handleFormSubmit = (data: CheckoutInput) => {   
             route.push(
                 {
                     pathname: "/confirmacion-compra",
@@ -179,7 +117,6 @@ interface PersonalData {
                 },
                 "/confirmacion-compra"
             );
-               
             // postCheckOut(data);
             return;
             // postCheckOut(data);
@@ -236,8 +173,7 @@ interface PersonalData {
                             <FormProvider {...methods}>
                                 <FormContent activeStep={activeStep} handleNext={handleNext} handleBack={handleBack} handleFormSubmit={handleFormSubmit} />
                             </FormProvider>
-                        </Box>
-                        
+                        </Box>                        
                     </Box>
                 </Paper>
             </Grid>

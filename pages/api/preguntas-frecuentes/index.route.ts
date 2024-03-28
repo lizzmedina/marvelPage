@@ -11,4 +11,4 @@ type Data = FaqsType[] | { message: string };
         } else {
             res.status(405).json({ message: 'Método no permitido' });
         }
-    }
+    };

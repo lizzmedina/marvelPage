@@ -3,10 +3,9 @@ import CardHome, { CardHomeProps } from "./CardHome";
 
 interface HomeProps {
     comics: CardHomeProps[];
-}
+};
 
 const GridCardsForHome: React.FC<HomeProps> = ({ comics}) => {
-    
     
     return(
         <Container>
@@ -18,6 +17,6 @@ const GridCardsForHome: React.FC<HomeProps> = ({ comics}) => {
                 ))}
             </Grid>
         </Container>        
-    )
-}
+    );
+};
 export default GridCardsForHome;

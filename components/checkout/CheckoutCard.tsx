@@ -6,8 +6,8 @@ import * as React from 'react'
 import { IComic } from 'interface/comics'
 
 export interface CardCheckoutProps {
-    comic: IComic
-}
+    comic: IComic;
+};
 
 export default function CardCheckout ({ comic}: CardCheckoutProps) {
   return (
@@ -22,5 +22,5 @@ export default function CardCheckout ({ comic}: CardCheckoutProps) {
         </Typography>
       </CardContent>
     </Card>
-  )
-}
+  );
+};

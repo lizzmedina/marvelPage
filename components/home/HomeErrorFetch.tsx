@@ -12,5 +12,5 @@ export const HomeErrorFetch = ({error}:HomeErrorFetchProps) => {
                 <Typography color='error' component='p'>{error.message}</Typography>
             </BodySingle>                    
         </Box>         
-    )
-}
+    );
+};

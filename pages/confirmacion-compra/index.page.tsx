@@ -5,18 +5,9 @@ import BodySingle from 'dh-marvel/components/layouts/body/single/body-single';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
-const retrieveDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem('checkoutData');
-    if (storedData) {
-        return JSON.parse(storedData);
-    }
-    return null;
-};
-
 const ConfirmationPay:NextPage = () => {
 
     const router = useRouter();
-
     const {name,  lastname, email, image, price, address} = router.query;
     
 
