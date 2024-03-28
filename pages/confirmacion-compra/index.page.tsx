@@ -59,7 +59,7 @@ const ConfirmationPay:NextPage = () => {
                     </Typography>
                     </Box>
                     <Card sx={{ maxWidth: 345 }}>
-                    <CardMedia sx={{ height: 300 }} />
+                    <CardMedia sx={{ height: 300 }} image={image}/>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                         {name}
