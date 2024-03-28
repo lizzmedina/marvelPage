@@ -120,7 +120,6 @@ interface PersonalData {
     const [comicData, setComicData] = useState<IComic | null>(null);
     const [checkoutData, setCheckoutData] = useState<DefaultValues>(defaultValues)
 
-    console.log('id ', comicId);
 
     const getInfo =async  () =>{
         if (comicId) {
@@ -200,7 +199,7 @@ interface PersonalData {
         //         console.error('There was an error!', error);
         //     });
         // };
-        const onsubmit = ()=> {
+        const handlePay = ()=> {
             route.push(`/confirmacion-compra`)
         }
         return (
@@ -234,8 +233,8 @@ interface PersonalData {
                         <Box sx={{ m: 2, justifyContent: "center" }}>
                             <FormProvider {...methods}>
                                 {activeStep === 0 && <PersonalDataForm initialValues={methods.getValues('customer')} onNextStep={handleNext} />}
-                                {activeStep === 1 && <AddressDataForm initialValues={methods.getValues('customer.address')}  />}
-                                {activeStep === 2 && <PaymentDataForm  initialValues={methods.getValues('card')} />}
+                                {activeStep === 1 && <AddressDataForm initialValues={methods.getValues('customer.address')} onPreviousStep={handleBack}  onNextStep={handleNext}/>}
+                                {activeStep === 2 && <PaymentDataForm  initialValues={methods.getValues('card')} onPreviousStep={handleBack}onSendPay={handlePay} />}
                             </FormProvider>
                         </Box>
                         

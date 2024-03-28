@@ -6,10 +6,18 @@ import { useForm, Controller} from "react-hook-form"
 
 interface AddressDataFormProps {
     initialValues: CheckoutInput["customer"]["address"];
+    onNextStep: () => void;
+    onPreviousStep: () => void;
 };
 
-const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
-
+const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues, onNextStep, onPreviousStep }) => {
+    const initial = {
+        address1: '',
+        address2: "",
+        city: "",
+        state:'',
+        zipCode: ''
+    };
     const { control, handleSubmit, formState: { errors, isValid } } = useForm<CheckoutInput["customer"]["address"]>({ defaultValues: initialValues });
 
 
@@ -17,11 +25,15 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
                     <Typography variant='h4' align="center"> Address information </Typography>
-                    <form >
+                    <form onSubmit={handleSubmit(onNextStep)}>
                         <Controller
                             name="address1"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -33,14 +45,17 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
                             )}
                         />
                         { errors.address1 &&  
-                            // <FormHelperText error>{errors.address1.message} </FormHelperText>
-                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                            <FormHelperText error  sx={{mb:2}}>{errors.address1.message} </FormHelperText>
                         }
 
                         <Controller
                             name="address2"
                             control={control}
-                            rules={{required: false, maxLength: 40, minLength: 0}} 
+                            rules={{ 
+                                required: { value: false, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -52,14 +67,17 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
                             )}
                         />
                         { errors.address2 && 
-                            // <FormHelperText error> {errors.address2.message} </FormHelperText>
-                            <FormHelperText error sx={{mb:2}}> Detalles como piso, tipo de vivivienda, etc. </FormHelperText>
+                            <FormHelperText error  sx={{mb:2}}> {errors.address2.message} </FormHelperText>
                         }   
 
                         <Controller
                             name="city"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -71,14 +89,18 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
                             )}
                         />
                         { errors.city && 
-                            // <FormHelperText error> {errors.city.message} </FormHelperText>
-                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                            <FormHelperText error  sx={{mb:2}}> {errors.city.message} </FormHelperText>
+                            
                         }       
 
                         <Controller
                             name="state"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -90,14 +112,17 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
                             )}
                         />      
                         { errors.state &&  
-                            // <FormHelperText error > {errors.state.message} </FormHelperText>
-                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                            <FormHelperText error   sx={{mb:2}}> {errors.state.message} </FormHelperText>
                         }  
 
                         <Controller
                             name="zipCode"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -111,7 +136,29 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
                         { errors.zipCode &&  
                             // <FormHelperText error>{errors.zipCode.message} </FormHelperText>
                             <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
-                        }                                     
+                        } 
+                        <Box sx={{mt:3,  display:'flex', flexDirection:'row' , justifyContent:'space-between'}}>
+                            <Box >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={onPreviousStep}
+                                >
+                                    Volver
+                                </Button>
+                            </Box>            
+                                <Box >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                >
+                                    Siguiente
+                                </Button>
+                            </Box>           
+                        </Box>
+                                        
                     </form>
             </Grid>
         </Grid>

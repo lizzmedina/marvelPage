@@ -7,22 +7,27 @@ import {
     Grid,
 } from "@mui/material";
 import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
-import { IComic } from "interface/comics";
 import { useRouter } from "next/router";
 import { useForm, Controller, useFormContext } from "react-hook-form";
-
 interface PaymentDataFormProps {
     initialValues: CheckoutInput["card"];
-    onPreviousStep?: () => void;
+    onPreviousStep: () => void;
+    onSendPay : () => void
 };
 
 const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
             initialValues,
             onPreviousStep,
+            onSendPay
         }) => {
-
+            const initial =  {
+                number: "",    
+                nameOnCard: "",
+                expDate: "",
+                cvc: "",
+            }
         const { control, handleSubmit, formState:{ errors, isValid } } = useForm({
-            defaultValues: initialValues,            
+            defaultValues: initial,            
         });
         const route = useRouter()
         
@@ -33,12 +38,16 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                 <Typography variant="h4" align="center">
                     Buy now
                 </Typography>
-                <form >
+                <form onSubmit={handleSubmit(onSendPay)}>
                     <Controller
                             name="number"
                             control={control}
                             defaultValue=""
-                            rules={{ required: true, maxLength: 20, minLength: 6}}
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 14, message: 'El valor ingresado es demasiado corto' }
+                            }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -50,13 +59,16 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                             )}
                     />
                     {errors.number && (
-                            // <FormHelperText error>{errors.number.message}</FormHelperText>
-                            <FormHelperText error  sx={{mb:2}}>Campo obligatorio.</FormHelperText>
+                            <FormHelperText error sx={{mb:2}}>{errors.number.message}</FormHelperText>
                         )}
                     <Controller
                         name="nameOnCard"
                         control={control}
-                        rules={{ required: true, maxLength: 20, minLength: 6 }}
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                            minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                        }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -68,20 +80,23 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                         )}
                     />
                     {errors.nameOnCard && (
-                        // <FormHelperText error sx={{mb:2}}>{errors.nameOnCard.message}</FormHelperText>
-                        <FormHelperText error  sx={{mb:2}}>Campo obligatorio. Debe ser el mismo nombre de la tarjeta</FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>{errors.nameOnCard.message}</FormHelperText>
+                        
                     )}
                     <Controller
                         name="expDate"
                         control={control}
                         rules={{
-                            required: true,
-                            pattern: /^((0[1-9])|(1[0-2]))\/((2[2-9])|([3-9][0-9]))$/,
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            pattern: {
+                                value: /^((0[1-9])|(1[0-2]))\/((2[2-9])|([3-9][0-9]))$/,
+                                message: 'El formato de fecha de expiración no es válido'
+                            },
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="fecha de expiración"
+                                label="Fecha de expiración (MM/YY)"
                                 variant="outlined"
                                 fullWidth
                                 sx={{ mb: 2 }}
@@ -89,21 +104,22 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                         )}
                     />
                     {errors.expDate && (
-                        // <FormHelperText error sx={{mb:2}}>{errors.expDate.message}</FormHelperText>
-                        <FormHelperText error  sx={{mb:2}}>Campo obligatorio. Fecha valida: dd/yy - ejemplo: 03/30</FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>{errors.expDate.message}</FormHelperText>
+                        
                     )}
 
                     <Controller
                         name="cvc"
                         control={control}
-                        rules={{
-                            required: true,
-                            maxLength: 3, minLength: 3
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            maxLength: { value: 3, message: 'El valor ingresado es demasiado largo' },
+                            minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label="codigo de seguridad"
+                                label="Código de seguridad (CVC)"
                                 variant="outlined"
                                 type='password'
                                 fullWidth
@@ -112,16 +128,19 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                         )}
                     />
                     {errors.cvc && (
-                        // <FormHelperText error sx={{mb:2}}>{errors.cvc.message}</FormHelperText>
-                        <FormHelperText error  sx={{mb:2}}>Campo obligatorio. Ingrese los 3 números de seguridad del reverso de su tarjeta</FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>{errors.cvc.message}</FormHelperText>
+                        
                     )}
-                </form>
-                <Box sx={{mt:3,  display:'flex', flexDirection:'row' , justifyContent:'space-between'}}>
+                    <Box sx={{mt:3,  display:'flex', flexDirection:'row' , justifyContent:'space-between'}}>
                         <Box>
-                            <Button onClick={onPreviousStep} variant="outlined" sx={{ mr: 2 }}>
-                                Volver
-                            </Button>
-                        </Box>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={onPreviousStep}
+                                >
+                                    Volver
+                                </Button>
+                            </Box>  
                         <Box>
                             <Button
                             type="submit"
@@ -133,6 +152,8 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                         </Box>
                     
                     </Box>
+                </form>
+                
             </Grid>
         </Grid>       
     );

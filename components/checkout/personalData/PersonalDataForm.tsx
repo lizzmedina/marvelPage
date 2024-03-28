@@ -8,18 +8,21 @@ interface PersonalDataFormProps {
 };
 
 const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) => {
-    const {control, handleSubmit, formState: { errors, isValid }, watch} = useForm<CheckoutInput["customer"]>();
+
+    const initial = {
+        name: '',
+        lastname: "",
+        email: "",
+    };
+
+    const {control, handleSubmit, formState: { errors, isValid }, watch} = useForm<CheckoutInput["customer"]>({
+        defaultValues: initial,
+        criteriaMode: "all"
+    });
     const onSubmit: SubmitHandler<CheckoutInput["customer"]> = (data) => console.log(data);
     
-    const nameinfo = watch('name');
-    const lastnameInfo = watch('lastname');
-    const emailinfo = watch('email');
-    console.log({errors});
-    console.log({isValid});
-    
-    console.log(nameinfo);
-    console.log(lastnameInfo);
-    console.log(emailinfo);
+    // console.log({initialValues, initial})
+    // console.log({isValid, total: Object.keys(errors).length, errors});
 
 
     return (
@@ -30,7 +33,11 @@ const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) =
                         name="name"
                         control={control}
                         defaultValue=''
-                        rules={{ required: true, maxLength: 20, minLength: 3 }}
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                            minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                        }}
                         render={({ field }) => (
                         <TextField
                             {...field}
@@ -42,15 +49,18 @@ const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) =
                         )}
                     />
                     {errors.name && (
-                        <FormHelperText error>{errors.name.message}</FormHelperText>
-                         //<FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>{errors.name.message}</FormHelperText>
                     )}
 
                     <Controller
                         name="lastname"
                         control={control}
                         defaultValue=""
-                        rules={{ required: true, maxLength: 20, minLength: 3 }}
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                            minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                        }}
                         render={({ field }) => (
                         <TextField
                             {...field}
@@ -62,15 +72,17 @@ const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) =
                         )}
                     />
                     {errors.lastname && (
-                        // <FormHelperText error>{errors.lastname?.message}</FormHelperText>
-                        <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>{errors.lastname?.message}</FormHelperText>
                     )}
 
                     <Controller
                         name="email"
                         control={control}
                         defaultValue=''
-                        rules={{ required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }}
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'El formato del campo no es válido' }
+                        }}
                         render={({ field }) => (
                         <TextField
                             {...field}
@@ -83,21 +95,20 @@ const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) =
                         )}
                     />
                     {errors.email && (
-                        // <FormHelperText error> {errors.email.message} </FormHelperText>
-                        <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
-                    )}                    
-                </form>
-                <Box sx={{ mt: 3 }}>
+                        <FormHelperText error sx={{mb:2}}> {errors.email.message} </FormHelperText>
+                    )}            
+
+                    <Box sx={{ mt: 3 }}>
                         <Button
                             type="submit"
                             variant="contained"
                             color="secondary"
                             fullWidth
-                            onClick={isValid ? onNextStep : undefined}
                         >
                             Siguiente
                         </Button>
-                    </Box>
+                    </Box>        
+                </form>
             </Grid>
         </Grid>
     );
