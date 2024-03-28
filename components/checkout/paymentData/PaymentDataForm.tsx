@@ -10,25 +10,19 @@ import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 import { useRouter } from "next/router";
 import { useForm, Controller, useFormContext } from "react-hook-form";
 interface PaymentDataFormProps {
-    initialValues: CheckoutInput["card"];
+    methods: any;
     onPreviousStep: () => void;
-    onSendPay : () => void
+    onSendPay : any
 };
 
 const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
-            initialValues,
+    methods,
             onPreviousStep,
             onSendPay
         }) => {
-            const initial =  {
-                number: "",    
-                nameOnCard: "",
-                expDate: "",
-                cvc: "",
-            }
-        const { control, handleSubmit, formState:{ errors, isValid } } = useForm({
-            defaultValues: initial,            
-        });
+          
+            const { control, handleSubmit, formState: { errors } } = methods;
+            
         const route = useRouter()
         
 

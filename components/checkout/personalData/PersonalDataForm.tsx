@@ -3,27 +3,19 @@ import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 interface PersonalDataFormProps {
-    initialValues: CheckoutInput["customer"];
+    methods: any;
     onNextStep: () => void;
 };
 
-const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) => {
+const PersonalDataForm = ({onNextStep, methods,}: PersonalDataFormProps) => {
 
-    const initial = {
-        name: '',
-        lastname: "",
-        email: "",
-    };
 
-    const {control, handleSubmit, formState: { errors, isValid }, watch} = useForm<CheckoutInput["customer"]>({
-        defaultValues: initial,
-        criteriaMode: "all"
-    });
-    const onSubmit: SubmitHandler<CheckoutInput["customer"]> = (data) => console.log(data);
+    const { control, handleSubmit, formState: { errors } } = methods;
     
-    // console.log({initialValues, initial})
-    // console.log({isValid, total: Object.keys(errors).length, errors});
 
+    const handleOnSubmit = () => {
+        
+    }
 
     return (
         <Grid container justifyContent="center">

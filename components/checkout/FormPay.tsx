@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { IComic } from "interface/comics";
 import { getComic } from "dh-marvel/services/marvel/marvel.service";
 import CheckoutCard from "./CheckoutCard";
+import { postCheckOut } from "dh-marvel/services/checkout/checkout.service";
 
     const steps = ["Personal Data", "Address Data", "Payment Data"];
 
@@ -142,32 +143,11 @@ interface PersonalData {
         getInfo()
     }, []);
     
-    const formatearInfo = (data: DefaultValues): CheckoutInput => {
-        const dataFormat = {
-            customer: {
-                ...data.customer,
-                address: {
-                    ...data.address
-                },
-            },
-            card: {
-                ...data.card
-            },
-            order: {
-                ...data.order
-            },
-        }
-        return dataFormat;
-    }
-
         const handleNext = () => {
-            console.log({activeStep, handleNext: '34'});
-            //si activestep === 0 
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         };
     
         const handleBack = () => {
-            console.log({activeStep});
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         };
     
@@ -175,33 +155,38 @@ interface PersonalData {
             route.back();
         };
     
-        // const handleFormSubmit = (data: CheckoutInput) => {
-        //     // Make request to the validation API with complete data
-        //     fetch('/api/checkout.route', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(data),
-        //     })
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(data => {
-        //         // Handle API response
-        //         route.push(`/confirmacion-compra`);
-        //     })
-        //     .catch(error => {
-        //         // Handle errors
-        //         console.error('There was an error!', error);
-        //     });
-        // };
-        const handlePay = ()=> {
-            route.push(`/confirmacion-compra`)
-        }
+        const handleFormSubmit = (data: CheckoutInput) => {
+
+            postCheckOut(data);
+            // console.log({data});
+            // return;
+            // Make request to the validation API with complete data
+            fetch('/api/checkout.route', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle API response
+                route.push(`/confirmacion-compra`);
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('There was an error!', error);
+            });
+        };
+
+        // const handlePay = ()=> {
+        //     route.push(`/confirmacion-compra`)
+        // }
         return (
             <Grid item xs={6} md={6} sx={{ justifyContent: "center" }}>
                 <Paper elevation={4} sx={{ p: 10, display: "flex", flexDirection: "column", flexWrap: "wrap", alignContent: "center", gap: 3, minWidth: 500, maxWidth: "800", m: 5 }}>
@@ -232,9 +217,9 @@ interface PersonalData {
                         </Stepper>
                         <Box sx={{ m: 2, justifyContent: "center" }}>
                             <FormProvider {...methods}>
-                                {activeStep === 0 && <PersonalDataForm initialValues={methods.getValues('customer')} onNextStep={handleNext} />}
-                                {activeStep === 1 && <AddressDataForm initialValues={methods.getValues('customer.address')} onPreviousStep={handleBack}  onNextStep={handleNext}/>}
-                                {activeStep === 2 && <PaymentDataForm  initialValues={methods.getValues('card')} onPreviousStep={handleBack}onSendPay={handlePay} />}
+                                {activeStep === 0 && <PersonalDataForm   methods={methods} onNextStep={handleNext} />}
+                                {activeStep === 1 && <AddressDataForm   methods={methods} onPreviousStep={handleBack}  onNextStep={handleNext}/>}
+                                {activeStep === 2 && <PaymentDataForm  methods={methods} onPreviousStep={handleBack}  onSendPay={handleFormSubmit} />}
                             </FormProvider>
                         </Box>
                         

@@ -5,20 +5,14 @@ import { useForm, Controller} from "react-hook-form"
 
 
 interface AddressDataFormProps {
-    initialValues: CheckoutInput["customer"]["address"];
+    methods:any;
     onNextStep: () => void;
     onPreviousStep: () => void;
 };
 
-const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues, onNextStep, onPreviousStep }) => {
-    const initial = {
-        address1: '',
-        address2: "",
-        city: "",
-        state:'',
-        zipCode: ''
-    };
-    const { control, handleSubmit, formState: { errors, isValid } } = useForm<CheckoutInput["customer"]["address"]>({ defaultValues: initialValues });
+const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, onPreviousStep }) => {
+
+    const { control, handleSubmit, formState: { errors } } = methods;
 
 
     return(
