@@ -1,145 +1,117 @@
 
 import { Box, Paper, Typography, TextField, Button, FormHelperText, Grid } from "@mui/material";
-import { useRouter } from "next/router";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 import { useForm, Controller} from "react-hook-form"
 
-interface IAddressDataFormProps {
-    address: string,   
-    addressDetails?: string,
-    city: string,
-    provincia: string,
-    postalCode: string
-} ;
-interface FormProps {
-    onNextStep: () => void;
-    onPreviousStep?: () => void;
+
+interface AddressDataFormProps {
+    initialValues: CheckoutInput["customer"]["address"];
 };
-const AddressDataForm = ({ onNextStep, onPreviousStep }: FormProps) => {
 
-    const {control, handleSubmit, formState:{errors, isValid}} = useForm<IAddressDataFormProps>();
-    const router = useRouter();
+const AddressDataForm: React.FC<AddressDataFormProps> = ({ initialValues }) => {
 
-    const onContinue = (data:IAddressDataFormProps) => {
-        console.log('probando el botón, data: ', data);        
-    };
+    const { control, handleSubmit, formState: { errors, isValid } } = useForm<CheckoutInput["customer"]["address"]>({ defaultValues: initialValues });
+
 
     return(
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
                     <Typography variant='h4' align="center"> Address information </Typography>
-                    <form onSubmit={handleSubmit(onContinue)}>
+                    <form >
                         <Controller
-                            name="address"
+                            name="address1"
                             control={control}
                             rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='address'
+                                    {...field}
+                                    label="Dirección"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2,  mt: 2 }}
                                 />
                             )}
                         />
-                        { errors.address &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}
+                        { errors.address1 &&  
+                            // <FormHelperText error>{errors.address1.message} </FormHelperText>
+                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                        }
 
                         <Controller
-                            name="addressDetails"
+                            name="address2"
                             control={control}
-                            rules={{required: false, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            rules={{required: false, maxLength: 40, minLength: 0}} 
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='addressDetail'
+                                    {...field}
+                                    label="Detalle de la dirección"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />
-                        { errors.addressDetails &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}   
+                        { errors.address2 && 
+                            // <FormHelperText error> {errors.address2.message} </FormHelperText>
+                            <FormHelperText error sx={{mb:2}}> Detalles como piso, tipo de vivivienda, etc. </FormHelperText>
+                        }   
 
                         <Controller
                             name="city"
                             control={control}
                             rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='city'
+                                    {...field}
+                                    label="Ciudad"
                                     variant="outlined"
-                                    defaultValue=''
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />
-                        { errors.city &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}       
+                        { errors.city && 
+                            // <FormHelperText error> {errors.city.message} </FormHelperText>
+                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                        }       
 
                         <Controller
-                            name="provincia"
+                            name="state"
                             control={control}
                             rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='provincia'
+                                    {...field}
+                                    label="Estado / provincia"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />      
-                        { errors.provincia &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}  
+                        { errors.state &&  
+                            // <FormHelperText error > {errors.state.message} </FormHelperText>
+                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                        }  
 
                         <Controller
-                            name="postalCode"
+                            name="zipCode"
                             control={control}
                             rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='postalCode'
+                                    {...field}
+                                    label="Código postal"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />
-                        { errors.postalCode &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}   
-
-                        <Box sx={{mt:3}}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="secondary"
-                                    fullWidth
-                                    onClick={isValid ? onNextStep : undefined}
-                                >
-                                    Continuar
-                                </Button>
-                            </Box>            
+                        { errors.zipCode &&  
+                            // <FormHelperText error>{errors.zipCode.message} </FormHelperText>
+                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                        }                                     
                     </form>
             </Grid>
         </Grid>

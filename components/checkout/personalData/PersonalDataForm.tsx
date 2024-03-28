@@ -1,129 +1,104 @@
-import {
-  Box,
-  TextField,
-  Button,
-  FormHelperText,
-  Grid,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { useForm, Controller } from "react-hook-form";
+import { Box, TextField, Button, FormHelperText, Grid } from "@mui/material";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
-interface IPersonalDataFormProps {
-    name: string;
-    lastName: string;
-    email: string;
-};
-interface FormProps {
+interface PersonalDataFormProps {
+    initialValues: CheckoutInput["customer"];
     onNextStep: () => void;
-    onPreviousStep?: () => void;
 };
 
-const PersonalDataForm = ({ onNextStep }: FormProps) => {
+const PersonalDataForm = ({onNextStep, initialValues,}: PersonalDataFormProps) => {
+    const {control, handleSubmit, formState: { errors, isValid }, watch} = useForm<CheckoutInput["customer"]>();
+    const onSubmit: SubmitHandler<CheckoutInput["customer"]> = (data) => console.log(data);
     
-    const {
-        control,
-        handleSubmit,
-        formState: { errors, isValid },
-        getValues,
-        watch,
-    } = useForm<IPersonalDataFormProps>();
+    const nameinfo = watch('name');
+    const lastnameInfo = watch('lastname');
+    const emailinfo = watch('email');
+    console.log({errors});
+    console.log({isValid});
+    
+    console.log(nameinfo);
+    console.log(lastnameInfo);
+    console.log(emailinfo);
 
-    const router = useRouter();
-
-    const onContinue = (data: IPersonalDataFormProps) => {
-        console.log("probando el botón, data: ", data);
-    };
-
-    const handleBack = () => {
-        router.back();
-    };
 
     return (
         <Grid container justifyContent="center">
-        <Grid item xs={12} md={10}>
-            <form onSubmit={handleSubmit(onContinue)}>
-                <Controller
-                    name="name"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: true, maxLength: 20, minLength: 3 }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <TextField
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        type="text"
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 2 }}
+            <Grid item xs={12} md={10}>
+                <form onSubmit={handleSubmit(onNextStep)}>
+                    <Controller
+                        name="name"
+                        control={control}
+                        defaultValue=''
+                        rules={{ required: true, maxLength: 20, minLength: 3 }}
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Name"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}
+                        />
+                        )}
                     />
+                    {errors.name && (
+                        <FormHelperText error>{errors.name.message}</FormHelperText>
+                         //<FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
                     )}
-                />
-                {errors.name && (
-                    <FormHelperText error>Este campo es obligatorio</FormHelperText>
-                )}
 
-                <Controller
-                    name="lastName"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: true, maxLength: 20, minLength: 3 }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <TextField
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        type="text"
-                        label="Lastname"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 2 }}
+                    <Controller
+                        name="lastname"
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: true, maxLength: 20, minLength: 3 }}
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Last Name"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}
+                        />
+                        )}
                     />
+                    {errors.lastname && (
+                        // <FormHelperText error>{errors.lastname?.message}</FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
                     )}
-                />
-                {errors.lastName && (
-                    <FormHelperText error>Este campo es obligatorio</FormHelperText>
-                )}
 
-                <Controller
-                    name="email"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <TextField
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        type="email"
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 2 }}
+                    <Controller
+                        name="email"
+                        control={control}
+                        defaultValue=''
+                        rules={{ required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }}
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            type="text"
+                            label="Email"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}
+                        />
+                        )}
                     />
-                    )}
-                />
-                {errors.email && (
-                    <FormHelperText error>Este campo es obligatorio</FormHelperText>
-                )}
-
-                <Box mt={2} display="flex" justifyContent="space-between">                    
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="secondary"
-                        fullWidth
-                        onClick={isValid ? onNextStep : undefined}
-                    >
-                        Continuar
-                    </Button>
-                </Box>
-            </form>
-        </Grid>
+                    {errors.email && (
+                        // <FormHelperText error> {errors.email.message} </FormHelperText>
+                        <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                    )}                    
+                </form>
+                <Box sx={{ mt: 3 }}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                            onClick={isValid ? onNextStep : undefined}
+                        >
+                            Siguiente
+                        </Button>
+                    </Box>
+            </Grid>
         </Grid>
     );
 };

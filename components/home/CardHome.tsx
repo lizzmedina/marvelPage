@@ -18,7 +18,7 @@ const CardHome: React.FC<CardHomeProps> = ({ image, title, id }) => {
         router.push(`/comics/${id}`);
     };
     const handleComicBuy = () => {
-        router.push(`/checkout`);
+        router.push(`/checkout/${id}`);
     };
 
     return (

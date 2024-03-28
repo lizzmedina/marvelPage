@@ -1,4 +1,5 @@
-/** @type {import('next').NextConfig} */
+require('dotenv').config();
+
 const nextConfig = {
     images: {
         domains: ['dh-frontend.cdn.prismic.io'],
@@ -12,7 +13,12 @@ const nextConfig = {
     // means the following files: _document.tsx, _app.tsx, middleware.ts, pages/users.tsx and pages/api/users.ts
     // will have to be renamed to _document.page.tsx, _app.page.tsx, middleware.route.ts, pages/users.page.tsx
     // and pages/api/users.page.ts respectively.
-    pageExtensions: ['page.tsx', 'page.ts', 'route.tsx', 'route.ts',]
+    pageExtensions: ['page.tsx', 'page.ts', 'route.tsx', 'route.ts'],
+    env: {
+        MARVEL_API_URL: process.env.MARVEL_API_URL,
+        MARVEL_API_PUBLIC_KEY: process.env.MARVEL_API_PUBLIC_KEY,
+        MARVEL_API_PRIVATE_KEY: process.env.MARVEL_API_PRIVATE_KEY
+    }
 }
 
-module.exports = nextConfig
+module.exports = nextConfig;
