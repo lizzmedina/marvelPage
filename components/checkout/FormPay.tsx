@@ -9,11 +9,12 @@ import { useRouter } from "next/router";
 import { IComic } from "interface/comics";
 import { getComic } from "dh-marvel/services/marvel/marvel.service";
 import CheckoutCard from "./CheckoutCard";
-import { postCheckOut } from "dh-marvel/services/checkout/checkout.service";
+import { postCheckOut } from "dh-marvel/services/checkout/checkout-pay.service";
+import { log } from "console";
 
     const steps = ["Personal Data", "Address Data", "Payment Data"];
 
-    interface DefaultValues {
+    export interface DefaultValues {        
         customer: {
             name: string;
             lastname: string;
@@ -36,8 +37,7 @@ import { postCheckOut } from "dh-marvel/services/checkout/checkout.service";
             name: string,
             image: string,
             price: number
-        }
-    
+        }    
     }
     
     const defaultValues: DefaultValues = {
@@ -66,31 +66,6 @@ import { postCheckOut } from "dh-marvel/services/checkout/checkout.service";
         }
     
     };
-    const formsData: CheckoutInput = {       
-        customer: {
-            name: "",
-            lastname: "",
-            email: "",
-            address: {
-                address1: "",
-                address2: "" || null,
-                city: "",
-                state: "",
-                zipCode: ""
-            }
-        },
-        card: {
-            number: "",
-            cvc: "",
-            expDate: "",
-            nameOnCard: ""
-        },
-        order: {
-            name: "",
-            image: "",
-            price: 0
-        }
-    };
 interface PersonalData {
         name: string;
         lastname: string;
@@ -116,20 +91,24 @@ interface PersonalData {
 
     const route = useRouter();
     const [activeStep, setActiveStep] = useState(0);
-    const methods = useForm<CheckoutInput>();
+    const methods = useForm<CheckoutInput>({defaultValues});
     const comicId = route.query.id as string;
     const [comicData, setComicData] = useState<IComic | null>(null);
     const [checkoutData, setCheckoutData] = useState<DefaultValues>(defaultValues)
+    const [query, setQuery] = useState(comicId);
 
-
-    const getInfo =async  () =>{
-        if (comicId) {
-            const id = parseInt(comicId);
-            getComic(id).then((data: IComic) => {
-                setComicData(data);
-            });
+    useEffect(() => {
+        const getInfo = async  () =>{
+            if (query) {
+                const id = parseInt(query);
+                getComic(id).then((data: IComic) => {
+                    setComicData(data);
+                });
+            };
         };
-    };
+        getInfo();
+    }, [query]);       
+
     const name = comicData?.title!
     const image = comicData?.thumbnail.path.concat(".", comicData?.thumbnail.extension)!
     const price = comicData?.price!
@@ -138,10 +117,7 @@ interface PersonalData {
         name,
         image,
         price
-    }
-    useEffect(() => {
-        getInfo()
-    }, []);
+    };
     
         const handleNext = () => {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -150,48 +126,89 @@ interface PersonalData {
         const handleBack = () => {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         };
-    
+        // const formatData = (data: DefaultValues) : CheckoutInput => {
+        //     const dataform = {
+        //         customer: {
+        //                         name: data.customer.name,
+        //                         lastname: data.lastname,
+        //                         email: data.email,
+        //                         address: {
+        //                             address1: data.address1,
+        //                             address2: data.address2,
+        //                             city: data.city,
+        //                             state: data.state,
+        //                             zipCode: data.zipCode,
+        //                         },
+        //         },
+        //                     card: {
+        //                         number: data.number,
+        //                         cvc: data.cvc,
+        //                         expDate: data.expDate,
+        //                         nameOnCard: data.nameOnCard,
+        //                     },
+        //                     order: {
+        //                         name: name,
+        //                         image: image,
+        //                         price: price,
+        //                     },
+        //     }
+            
+        // }
+        // }
+
         const handleBackCard = () => {
             route.back();
         };
-    
+        // const handleFormSubmit = (data: CheckoutInput) => {
+        //     route.push(`/confirmacion-compra`);
+        // }
         const handleFormSubmit = (data: CheckoutInput) => {
+            console.log({data});         
 
-            postCheckOut(data);
-            // console.log({data});
-            // return;
-            // Make request to the validation API with complete data
-            fetch('/api/checkout.route', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            route.push(
+                {
+                    pathname: "/confirmacion-compra",
+                    query: {
+                        name: data.name,
+                        lastname: data.lastname,
+                        email: data.email,
+                        image: image,
+                        price: price,
+                        address : `${data.address1}${data.city}.${data.state}.${data.zipCode}`
+                    },
                 },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Handle API response
-                route.push(`/confirmacion-compra`);
-            })
-            .catch(error => {
-                // Handle errors
-                console.error('There was an error!', error);
-            });
+                "/confirmacion-compra"
+            );
+               
+            // postCheckOut(data);
+            return;
+            // postCheckOut(data);
+            // fetch('/api/checkout.route', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(data),
+            // })
+            // .then(response => {
+            //     if (!response.ok) {
+            //         throw new Error('Network response was not ok');
+            //     }
+            //     return response.json();
+            // })
+            // .then(data => {
+            //     route.push(`/confirmacion-compra`);
+            // })
+            // .catch(error => {
+            //     console.error('There was an error!', error);
+            // });
         };
 
-        // const handlePay = ()=> {
-        //     route.push(`/confirmacion-compra`)
-        // }
         return (
             <Grid item xs={6} md={6} sx={{ justifyContent: "center" }}>
-                <Paper elevation={4} sx={{ p: 10, display: "flex", flexDirection: "column", flexWrap: "wrap", alignContent: "center", gap: 3, minWidth: 500, maxWidth: "800", m: 5 }}>
+                <Paper elevation={4} sx={{ p: 10, display: "flex", flexDirection: "row", flexWrap: "wrap", alignContent: "center", gap: 3, minWidth: 500, maxWidth: "800", m: 5 }}>
                     <Box>
-                        <Button sx={{ fontWeight: "bold", color: "white", border: "1px solid" }} onClick={activeStep === 0 ? handleBackCard : handleBack} variant="contained">
+                        <Button sx={{ fontWeight: "bold", color: "white", border: "1px solid" }} onClick={handleBackCard} variant="contained">
                             Atrás
                         </Button>
                     </Box>
@@ -217,9 +234,7 @@ interface PersonalData {
                         </Stepper>
                         <Box sx={{ m: 2, justifyContent: "center" }}>
                             <FormProvider {...methods}>
-                                {activeStep === 0 && <PersonalDataForm   methods={methods} onNextStep={handleNext} />}
-                                {activeStep === 1 && <AddressDataForm   methods={methods} onPreviousStep={handleBack}  onNextStep={handleNext}/>}
-                                {activeStep === 2 && <PaymentDataForm  methods={methods} onPreviousStep={handleBack}  onSendPay={handleFormSubmit} />}
+                                <FormContent activeStep={activeStep} handleNext={handleNext} handleBack={handleBack} handleFormSubmit={handleFormSubmit} />
                             </FormProvider>
                         </Box>
                         
@@ -228,6 +243,24 @@ interface PersonalData {
             </Grid>
         );
     };
+    interface FormContentProps {
+        activeStep: number;
+        handleNext: () => void;
+        handleBack: () => void;
+        handleFormSubmit: (data: CheckoutInput) => void;
+    }
     
+    const FormContent: React.FC<FormContentProps> = ({ activeStep, handleNext, handleBack, handleFormSubmit }) => {
+        switch (activeStep) {
+            case 0:
+                return <PersonalDataForm handleNext={handleNext} />;
+            case 1:
+                return <AddressDataForm handleBack={handleBack} handleNext={handleNext} />;
+            case 2:
+                return <PaymentDataForm onPreviousStep={handleBack} handleFormSubmit={handleFormSubmit} />;
+            default:
+                return null;
+        }
+    };
     export default FormPay;
     

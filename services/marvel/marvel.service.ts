@@ -7,7 +7,6 @@ const fetchApi = async (endpoint: string, urlParams?: string) => {
     
     const authString = generateAuthenticationString();
     const url = `${MARVEL_API_URL}/${endpoint}?${authString}&${urlParams ?? ''}`
-    console.log({endpoint, urlParams, url,MARVEL_API_URL});
     const response = await fetch(url);
     return await response.json();
 }

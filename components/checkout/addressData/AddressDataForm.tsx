@@ -1,28 +1,28 @@
 
 import { Box, Paper, Typography, TextField, Button, FormHelperText, Grid } from "@mui/material";
 import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
-import { useForm, Controller} from "react-hook-form"
+import { useForm, Controller, useFormContext} from "react-hook-form"
 
 
 interface AddressDataFormProps {
-    methods:any;
-    onNextStep: () => void;
-    onPreviousStep: () => void;
+    handleNext: () => void;
+    handleBack: () => void;
 };
 
-const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, onPreviousStep }) => {
+const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBack }) => {
 
-    const { control, handleSubmit, formState: { errors } } = methods;
+    const { control, handleSubmit, formState: { errors } } = useFormContext();
 
 
     return(
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
                     <Typography variant='h4' align="center"> Address information </Typography>
-                    <form onSubmit={handleSubmit(onNextStep)}>
+                    <form onSubmit={handleSubmit(handleNext)}>
                         <Controller
                             name="address1"
                             control={control}
+                            defaultValue=""
                             rules={{ 
                                 required: { value: true, message: 'Este campo es obligatorio' },
                                 maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -45,6 +45,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, 
                         <Controller
                             name="address2"
                             control={control}
+                            defaultValue=""
                             rules={{ 
                                 required: { value: false, message: 'Este campo es obligatorio' },
                                 maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -67,6 +68,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, 
                         <Controller
                             name="city"
                             control={control}
+                            defaultValue=""
                             rules={{ 
                                 required: { value: true, message: 'Este campo es obligatorio' },
                                 maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -90,6 +92,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, 
                         <Controller
                             name="state"
                             control={control}
+                            defaultValue=""
                             rules={{ 
                                 required: { value: true, message: 'Este campo es obligatorio' },
                                 maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -112,6 +115,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, 
                         <Controller
                             name="zipCode"
                             control={control}
+                            defaultValue=""
                             rules={{ 
                                 required: { value: true, message: 'Este campo es obligatorio' },
                                 maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -137,7 +141,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({ methods, onNextStep, 
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
-                                    onClick={onPreviousStep}
+                                    onClick={handleBack}
                                 >
                                     Volver
                                 </Button>

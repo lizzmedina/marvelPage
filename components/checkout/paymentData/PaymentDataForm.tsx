@@ -10,18 +10,16 @@ import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 import { useRouter } from "next/router";
 import { useForm, Controller, useFormContext } from "react-hook-form";
 interface PaymentDataFormProps {
-    methods: any;
     onPreviousStep: () => void;
-    onSendPay : any
+    handleFormSubmit : any
 };
 
 const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
-    methods,
             onPreviousStep,
-            onSendPay
+            handleFormSubmit
         }) => {
-          
-            const { control, handleSubmit, formState: { errors } } = methods;
+        
+        const { control, handleSubmit, formState: { errors } } = useFormContext();
             
         const route = useRouter()
         
@@ -32,7 +30,7 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                 <Typography variant="h4" align="center">
                     Buy now
                 </Typography>
-                <form onSubmit={handleSubmit(onSendPay)}>
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <Controller
                             name="number"
                             control={control}
@@ -58,6 +56,7 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                     <Controller
                         name="nameOnCard"
                         control={control}
+                        defaultValue=""
                         rules={{ 
                             required: { value: true, message: 'Este campo es obligatorio' },
                             maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -80,6 +79,7 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                     <Controller
                         name="expDate"
                         control={control}
+                        defaultValue=""
                         rules={{
                             required: { value: true, message: 'Este campo es obligatorio' },
                             pattern: {
@@ -105,6 +105,7 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                     <Controller
                         name="cvc"
                         control={control}
+                        defaultValue=""
                         rules={{ 
                             required: { value: true, message: 'Este campo es obligatorio' },
                             maxLength: { value: 3, message: 'El valor ingresado es demasiado largo' },
