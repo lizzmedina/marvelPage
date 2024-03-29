@@ -136,10 +136,9 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                 <Button
                                     type="submit"
                                     variant="contained"
-                                    color="secondary"
                                     onClick={handleBack}
                                     fullWidth
-                                    sx={{mb:1}}
+                                    sx={{ mb: 2,  color: "white", border: "1px solid" }}
                                 >
                                     Volver
                                 </Button>

@@ -25,36 +25,36 @@ type Data = {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
-    console.log({method:'checkout-pay',req,res});
-    const body: CheckoutInput = req.body;
-    res.status(200).json({data: body});
-    return;
-    // if (req.method !== "POST") {
-    //     res.status(405).json(ERROR_METHOD_NOT_ALLOWED);
-    //     return;
-    // }
-    // try {
-    //     const body: CheckoutInput = req.body;
-    //     if (body.customer.address.address2 === invalidAddress) {
-    //         res.status(400).json(ERROR_INCORRECT_ADDRESS);
-    //         return
-    //     }
-    //     if (body.card.number === withoutFundsCard) {
-    //         res.status(400).json(ERROR_CARD_WITHOUT_FUNDS);
-    //         return
-    //     }
-    //     if (body.card.number === withoutAuthorizationCard) {
-    //         res.status(400).json(ERROR_CARD_WITHOUT_AUTHORIZATION);
-    //         return
-    //     }
-    //     if (body.card.number === validCard) {
-    //         res.status(200).json({data: body});
-    //         return
-    //     }
-    //     res.status(400).json(ERROR_CARD_DATA_INCORRECT);
-    // } catch (err) {
-    //     console.log(err);
-    //     res.status(500).json(ERROR_SERVER);
-    // }
+    // console.log({method:'checkout-pay',req,res});
+    // const body: CheckoutInput = req.body;
+    // res.status(200).json({data: body});
+    // return;
+    if (req.method !== "POST") {
+        res.status(405).json(ERROR_METHOD_NOT_ALLOWED);
+        return;
+    }
+    try {
+        const body: CheckoutInput = req.body;
+        if (body.customer.address.address2 === invalidAddress) {
+            res.status(400).json(ERROR_INCORRECT_ADDRESS);
+            return
+        }
+        if (body.card.number === withoutFundsCard) {
+            res.status(400).json(ERROR_CARD_WITHOUT_FUNDS);
+            return
+        }
+        if (body.card.number === withoutAuthorizationCard) {
+            res.status(400).json(ERROR_CARD_WITHOUT_AUTHORIZATION);
+            return
+        }
+        if (body.card.number === validCard) {
+            res.status(200).json({data: body});
+            return
+        }
+        res.status(400).json(ERROR_CARD_DATA_INCORRECT);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(ERROR_SERVER);
+    }
 
 }

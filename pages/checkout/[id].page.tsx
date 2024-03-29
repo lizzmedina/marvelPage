@@ -17,7 +17,7 @@ const CheckoutPage: NextPage = () => {
                             email: "",
                             address: {
                                 address1: "",
-                                address2: null,
+                                address2: "",
                                 city: "",
                                 state: "",
                                 zipCode: ""
