@@ -1,5 +1,5 @@
 import { Box, TextField, Button, FormHelperText, Grid } from "@mui/material";
-import { Controller, SubmitHandler, useFormContext } from "react-hook-form";
+import { Controller, SubmitHandler, useFormContext, useFormState } from "react-hook-form";
 
 interface PersonalDataFormProps {
     handleNext: () => void;
@@ -7,14 +7,16 @@ interface PersonalDataFormProps {
 
 const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
 
-    const { control, handleSubmit, formState: { errors } } =useFormContext();
+    const { control, handleSubmit} =useFormContext();
+    const { errors } = useFormState();
+    
         
     return (
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
                 <form onSubmit={handleSubmit(handleNext)}>
                     <Controller
-                        name="name"
+                        name="customer.name"
                         control={control}
                         defaultValue=''
                         rules={{ 
@@ -32,12 +34,12 @@ const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
                         />
                         )}
                     />
-                    {errors.name && (
-                        <FormHelperText error sx={{mb:2}}>{errors.name.message}</FormHelperText>
-                    )}
+                    {/* {errors.customer.name && (
+                        <FormHelperText error sx={{mb:2}}>{errors.customer.name.message}</FormHelperText>
+                    )} */}
 
                     <Controller
-                        name="lastname"
+                        name="customer.lastname"
                         control={control}
                         defaultValue=""
                         rules={{ 
@@ -55,12 +57,12 @@ const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
                         />
                         )}
                     />
-                    {errors.lastname && (
-                        <FormHelperText error sx={{mb:2}}>{errors.lastname?.message}</FormHelperText>
-                    )}
+                    {/* {errors.customer.lastname && (
+                        <FormHelperText error sx={{mb:2}}>{errors.customer.lastname?.message}</FormHelperText>
+                    )} */}
 
                     <Controller
-                        name="email"
+                        name="customer.email"
                         control={control}
                         defaultValue=''
                         rules={{ 
@@ -78,9 +80,9 @@ const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
                         />
                         )}
                     />
-                    {errors.email && (
-                        <FormHelperText error sx={{mb:2}}> {errors.email.message} </FormHelperText>
-                    )}            
+                    {/* {errors.customer.email && (
+                        <FormHelperText error sx={{mb:2}}> {errors.customer.email.message} </FormHelperText>
+                    )}             */}
 
                     <Box sx={{ mt: 3 }}>
                         <Button

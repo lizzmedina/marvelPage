@@ -1,15 +1,14 @@
 import LayoutCheckout from "dh-marvel/components/layouts/layout-checkout";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
-const ConfirmationPay: NextPage = () => {
-    
+const ConfirmationPay: NextPage<{data: string | undefined }> = ({  data }) => {
+
     const router = useRouter();
-    const { name, namecomic, lastname, email, image, price, address } =
-        router.query;
+    const checkoutData = data ? JSON.parse(data as string) : null;
 
     return (
         <LayoutCheckout>
@@ -49,22 +48,22 @@ const ConfirmationPay: NextPage = () => {
                 </Typography>
             </Box>
             <Card sx={{ maxWidth: 345 }}>
-                <CardMedia sx={{ height: 300 }} image={image} />
+                <CardMedia sx={{ height: 300 }} image={checkoutData.order.image} />
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    {namecomic}
+                    {checkoutData.order.name}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                    Nombre y apellido: {name} {lastname}
+                    Nombre y apellido: {checkoutData.name} {checkoutData.lastname}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                    Email: {email}
+                    Email: {checkoutData.email}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                    Dirección de entrega: {address}
+                    Dirección de entrega: {checkoutData.address.address1}, ciudad: {checkoutData.address.city}, estado: {checkoutData.address.state}, código postal: {checkoutData.address.zipCode}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                    Valor del pago: ${price}
+                    Valor del pago: ${checkoutData.order.price}
                 </Typography>
                 </CardContent>
             </Card>
@@ -72,5 +71,15 @@ const ConfirmationPay: NextPage = () => {
         </BodySingle>
         </LayoutCheckout>
     );
+};
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { query } = context;
+    const { namecomic, data } = query;
+
+    return {
+        props: {
+            data: data as string | undefined,
+        },
+    };
 };
 export default ConfirmationPay;

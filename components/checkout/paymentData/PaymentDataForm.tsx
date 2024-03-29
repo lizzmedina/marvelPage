@@ -1,33 +1,26 @@
 import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  FormHelperText,
-  Grid,
+    Box,
+    TextField,
+    Button,
+    FormHelperText,
+    Grid,
 } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 interface PaymentDataFormProps {
-  onPreviousStep: () => void;
-  handleFormSubmit: any;
-}
+    onPreviousStep: () => void;
+    handleFormSubmit: any;
+};
 
-const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
-    onPreviousStep,
-    handleFormSubmit,
-    }) => {
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useFormContext();
+const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handleFormSubmit,  }) => {
+    
+    const { control, handleSubmit, formState: { errors }, } = useFormContext();
 
     return (
         <Grid container justifyContent="center">
         <Grid item xs={12} md={10}>
             <form onSubmit={handleSubmit(handleFormSubmit)}>
             <Controller
-                name="number"
+                name="card.number"
                 control={control}
                 defaultValue=""
                 rules={{
@@ -51,13 +44,13 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                 />
                 )}
             />
-            {errors.number && (
+            {/* {errors?.card.number && (
                 <FormHelperText error sx={{ mb: 2 }}>
-                {errors.number.message}
+                {errors.card.number.message}
                 </FormHelperText>
-            )}
+            )} */}
             <Controller
-                name="nameOnCard"
+                name="card.nameOnCard"
                 control={control}
                 defaultValue=""
                 rules={{
@@ -81,13 +74,13 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                 />
                 )}
             />
-            {errors.nameOnCard && (
+            {/* {errors.card.nameOnCard && (
                 <FormHelperText error sx={{ mb: 2 }}>
-                {errors.nameOnCard.message}
+                {errors.card.nameOnCard.message}
                 </FormHelperText>
-            )}
+            )} */}
             <Controller
-                name="expDate"
+                name="card.expDate"
                 control={control}
                 defaultValue=""
                 rules={{
@@ -107,14 +100,14 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                 />
                 )}
             />
-            {errors.expDate && (
+            {/* {errors.card.expDate && (
                 <FormHelperText error sx={{ mb: 2 }}>
-                {errors.expDate.message}
+                {errors.card.expDate.message}
                 </FormHelperText>
-            )}
+            )} */}
 
             <Controller
-                name="cvc"
+                name="card.cvc"
                 control={control}
                 defaultValue=""
                 rules={{
@@ -139,11 +132,11 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
                 />
                 )}
             />
-            {errors.cvc && (
+            {/* {errors.card.cvc && (
                 <FormHelperText error sx={{ mb: 2 }}>
-                {errors.cvc.message}
+                {errors.card.cvc.message}
                 </FormHelperText>
-            )}
+            )} */}
             <Box
                 sx={{
                 mt: 1,

@@ -63,8 +63,10 @@ import CheckoutCard from "./CheckoutCard";
             price: 0
         },    
     };
-
-    const FormPay: React.FC = () => {
+    interface FormPayProps {
+        defaultValues: CheckoutInput;
+    }
+    const FormPay: React.FC<FormPayProps> = ({defaultValues}) => {
 
     const route = useRouter();
     const [activeStep, setActiveStep] = useState(0);
@@ -104,18 +106,46 @@ import CheckoutCard from "./CheckoutCard";
 
         const handleFormSubmit = (data: CheckoutInput) => {   
             console.log(data);
-            
+            const { card, ...restData } = data;
+            const filteredData: CheckoutInput = {
+                ...restData,
+                card: {
+                    ...card,
+                    cvc: '', 
+                },
+                order: {
+                    name: comicData?.title || '',
+                    image: comicData?.thumbnail.path.concat(".", comicData?.thumbnail.extension) || '',
+                    price: comicData?.price || 0,
+                },
+            };
             route.push(
                 {
                     pathname: "/confirmacion-compra",
                     query: {
-                        namecomic: name,
-                        name: data.name,
-                        lastname: data.lastname,
-                        email: data.email,
-                        image: image,
-                        price: price,
-                        address : `${data.address1}, ciudad: ${data.city}, estado: ${data.state},  código postal:  ${data.zipCode}`
+                            data: JSON.stringify({
+                                name: filteredData.customer.name,
+                                lastname: filteredData.customer.lastname,
+                                email: filteredData.customer.email,
+                                address: {
+                                    address1: filteredData.customer.address.address1,
+                                    address2: filteredData.customer.address.address2,
+                                    city: filteredData.customer.address.city,
+                                    state: filteredData.customer.address.state,
+                                    zipCode: filteredData.customer.address.zipCode,
+                                },
+                                card: {
+                                    number: filteredData.card.number,
+                                    cvc: filteredData.card.cvc,
+                                    expDate: filteredData.card.expDate,
+                                    nameOnCard: filteredData.card.nameOnCard,
+                                },
+                                order: {
+                                    name: filteredData.order.name,
+                                    image: filteredData.order.image,
+                                    price: filteredData.order.price,
+                                }
+                        }),
                     },
                 },
                 "/confirmacion-compra"
