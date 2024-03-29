@@ -6,6 +6,7 @@ import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
 const ConfirmationPay: NextPage = () => {
+    
     const router = useRouter();
     const { name, namecomic, lastname, email, image, price, address } =
         router.query;

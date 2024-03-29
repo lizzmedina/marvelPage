@@ -115,7 +115,7 @@ import CheckoutCard from "./CheckoutCard";
                         email: data.email,
                         image: image,
                         price: price,
-                        address : `${data.address1}${data.city}.${data.state}.${data.zipCode}`
+                        address : `${data.address1}, ciudad: ${data.city}, estado: ${data.state},  código postal:  ${data.zipCode}`
                     },
                 },
                 "/confirmacion-compra"
