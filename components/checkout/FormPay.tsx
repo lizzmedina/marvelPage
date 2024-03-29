@@ -103,10 +103,13 @@ import CheckoutCard from "./CheckoutCard";
         };
 
         const handleFormSubmit = (data: CheckoutInput) => {   
+            console.log(data);
+            
             route.push(
                 {
                     pathname: "/confirmacion-compra",
                     query: {
+                        namecomic: name,
                         name: data.name,
                         lastname: data.lastname,
                         email: data.email,
@@ -142,18 +145,22 @@ import CheckoutCard from "./CheckoutCard";
         };
 
         return (
-            <Grid item xs={6} md={6} sx={{ justifyContent: "center" }}>
-                <Paper elevation={4} sx={{ p: 10, display: "flex", flexDirection: "row", flexWrap: "wrap", alignContent: "center", gap: 3, minWidth: 500, maxWidth: "800", m: 5 }}>
+            <Grid item xs={6} md={6} sx={{display:'flex',justifyContent: "center", flexDirection:'row' }}>
+                <Paper elevation={4} sx={{ p: 10, display: "flex", flexDirection: "row", flexWrap: "wrap", alignContent: "center", gap: 3, m: 5 }}>
                     <Box>
-                        <Button sx={{ fontWeight: "bold", color: "white", border: "1px solid" }} onClick={handleBackCard} variant="contained">
+                        <Button 
+                            sx={{ fontWeight: "bold", color: "white", border: "1px solid" }} 
+                            onClick={handleBackCard} 
+                            variant="contained"
+                        >
                             Atrás
                         </Button>
-                    </Box>
-                    <Typography sx={{ fontWeight: "bold", fontSize: 40 }}>Payment process</Typography>
-                    <Box sx={{ padding: { xs: "20px", sm: "20px" } }} display={'flex'} justifyContent={'center'}>
+                    </Box>                    
+                    <Box sx={{display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                    <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>Payment process</Typography>
                         <Stack
                             direction={{ sm: "column", md: "row-reverse" }}
-                            spacing={{ xs: 5, sm: 8, md: 8, xl: 20 }}
+                            spacing={{ xs: 5, sm: 8, md: 8, xl: 10 }}
                             alignItems={'center'}
                         >
                             {comicData && (
@@ -198,5 +205,4 @@ import CheckoutCard from "./CheckoutCard";
                 return null;
         }
     };
-    export default FormPay;
-    
+    export default FormPay;    

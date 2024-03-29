@@ -1,15 +1,15 @@
 import {
-    Box,
-    Typography,
-    TextField,
-    Button,
-    FormHelperText,
-    Grid,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  FormHelperText,
+  Grid,
 } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 interface PaymentDataFormProps {
-    onPreviousStep: () => void;
-    handleFormSubmit: any;
+  onPreviousStep: () => void;
+  handleFormSubmit: any;
 }
 
 const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
@@ -25,9 +25,6 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
     return (
         <Grid container justifyContent="center">
         <Grid item xs={12} md={10}>
-            <Typography variant="h4" align="center">
-            Buy now
-            </Typography>
             <form onSubmit={handleSubmit(handleFormSubmit)}>
             <Controller
                 name="number"
@@ -149,23 +146,30 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({
             )}
             <Box
                 sx={{
-                mt: 3,
+                mt: 1,
                 display: "flex",
-                flexDirection: "row",
+                flexWrap: "wrap",
+                flexDirection:'column',
                 justifyContent: "space-between",
                 }}
             >
                 <Box>
                 <Button
-                    variant="contained"
-                    color="secondary"
+                    variant="contained"                   
                     onClick={onPreviousStep}
+                    sx={{ mb: 2,  color: "white", border: "1px solid" }}
+                    fullWidth
                 >
                     Volver
                 </Button>
                 </Box>
                 <Box>
-                <Button type="submit" variant="contained" color="secondary">
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                >
                     Comprar
                 </Button>
                 </Box>

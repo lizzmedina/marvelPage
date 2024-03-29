@@ -14,7 +14,6 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
     return(
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
-                    <Typography variant='h4' align="center"> Address information </Typography>
                     <form onSubmit={handleSubmit(handleNext)}>
                         <Controller
                             name="address1"
@@ -83,7 +82,6 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                         />
                         { errors.city && 
                             <FormHelperText error  sx={{mb:2}}> {errors.city.message} </FormHelperText>
-                            
                         }       
 
                         <Controller
@@ -129,16 +127,18 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                             )}
                         />
                         { errors.zipCode &&  
-                            // <FormHelperText error>{errors.zipCode.message} </FormHelperText>
-                            <FormHelperText error sx={{mb:2}}>Este campo es obligatorio. </FormHelperText>
+                            <FormHelperText error>{errors.zipCode.message} </FormHelperText>
+                            
                         } 
-                        <Box sx={{mt:3,  display:'flex', flexDirection:'row' , justifyContent:'space-between'}}>
+                        <Box sx={{mt:1,  display:'flex', flexDirection:'column' , justifyContent:'space-between'}}>
                             <Box >
                                 <Button
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
                                     onClick={handleBack}
+                                    fullWidth
+                                    sx={{mb:1}}
                                 >
                                     Volver
                                 </Button>
@@ -148,6 +148,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
+                                    fullWidth
                                 >
                                     Siguiente
                                 </Button>

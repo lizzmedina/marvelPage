@@ -11,7 +11,7 @@ export interface CardCheckoutProps {
 
 export default function CardCheckout ({ comic}: CardCheckoutProps) {
   return (
-    <Card sx={{ width: 350 }}>
+    <Card >
       <CardMedia sx={{ height: 300 }} image={`${comic.thumbnail.path}.${comic.thumbnail.extension}`} title={`${comic.title} imagen`} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
