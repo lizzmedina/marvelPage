@@ -1,5 +1,7 @@
+import { Message } from "@mui/icons-material";
 import { Box, TextField, Button, FormHelperText, Grid } from "@mui/material";
-import { Controller, SubmitHandler, useFormContext, useFormState } from "react-hook-form";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import { Controller, useFormContext, useFormState } from "react-hook-form";
 
 interface PersonalDataFormProps {
     handleNext: () => void;
@@ -8,17 +10,18 @@ interface PersonalDataFormProps {
 const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
 
     const { control, handleSubmit} =useFormContext();
-    const { errors } = useFormState();
     
-        
+    const { errors } = useFormState<CheckoutInput>();
+                
     return (
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
                 <form onSubmit={handleSubmit(handleNext)}>
-                    <Controller
+                    
+                        <Controller
                         name="customer.name"
                         control={control}
-                        defaultValue=''
+                        defaultValue=''       
                         rules={{ 
                             required: { value: true, message: 'Este campo es obligatorio' },
                             maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
@@ -30,13 +33,13 @@ const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
                             label="Name"
                             variant="outlined"
                             fullWidth
-                            sx={{ mb: 2 }}
+                            sx={{ mb: 2 }}                           
                         />
-                        )}
-                    />
-                    {/* {errors.customer.name && (
-                        <FormHelperText error sx={{mb:2}}>{errors.customer.name.message}</FormHelperText>
-                    )} */}
+                        )}    
+                    />    
+                    {errors.customer?.name && (
+                        <FormHelperText error sx={{mb:2}}>{errors.customer?.name .message}</FormHelperText>
+                    )}              
 
                     <Controller
                         name="customer.lastname"
@@ -57,9 +60,9 @@ const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
                         />
                         )}
                     />
-                    {/* {errors.customer.lastname && (
+                    {errors.customer?.lastname && (
                         <FormHelperText error sx={{mb:2}}>{errors.customer.lastname?.message}</FormHelperText>
-                    )} */}
+                    )}
 
                     <Controller
                         name="customer.email"
@@ -80,9 +83,9 @@ const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
                         />
                         )}
                     />
-                    {/* {errors.customer.email && (
+                    {errors.customer?.email && (
                         <FormHelperText error sx={{mb:2}}> {errors.customer.email.message} </FormHelperText>
-                    )}             */}
+                    )}            
 
                     <Box sx={{ mt: 3 }}>
                         <Button

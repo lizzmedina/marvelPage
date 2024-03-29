@@ -1,5 +1,6 @@
 import { Box,   TextField, Button, FormHelperText, Grid } from "@mui/material";
-import {  Controller, useFormContext} from "react-hook-form";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import {  Controller, useFormContext, useFormState} from "react-hook-form";
 
 interface AddressDataFormProps {
     handleNext: () => void;
@@ -8,7 +9,8 @@ interface AddressDataFormProps {
 
 const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBack }) => {
 
-    const { control, handleSubmit, formState: { errors } } = useFormContext();
+    const { control, handleSubmit} = useFormContext();
+    const { errors } = useFormState<CheckoutInput>();
 
 
     return(
@@ -16,7 +18,7 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
             <Grid item xs={12} md={10}>
                     <form onSubmit={handleSubmit(handleNext)}>
                         <Controller
-                            name="custumer.address.addess1"
+                            name="customer.address.address1"
                             control={control}
                             defaultValue=""
                             rules={{ 
@@ -34,12 +36,12 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                 />
                             )}
                         />
-                        {/* { errors.custumer.address.addess1 &&  
-                            <FormHelperText error  sx={{mb:2}}>{errors.custumer.address.addess1.message} </FormHelperText>
-                        } */}
+                        { errors.customer?.address?.address1 &&  
+                            <FormHelperText error  sx={{mb:2}}>{errors.customer.address.address1.message} </FormHelperText>
+                        }
 
                         <Controller
-                            name="custumer.address.address2"
+                            name="customer.address.address2"
                             control={control}
                             defaultValue=""
                             rules={{ 
@@ -57,9 +59,9 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                 />
                             )}
                         />
-                        {/* { errors.custumer.address.address2 && 
-                            <FormHelperText error  sx={{mb:2}}> {errors.custumer.address.address2.message} </FormHelperText>
-                        }    */}
+                        { errors.customer?.address?.address2 && 
+                            <FormHelperText error  sx={{mb:2}}> {errors.customer.address.address2.message} </FormHelperText>
+                        }   
 
                         <Controller
                             name="customer.address.city"
@@ -80,9 +82,9 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                 />
                             )}
                         />
-                        {/* { errors.customer.address.city && 
+                        { errors.customer?.address?.city && 
                             <FormHelperText error  sx={{mb:2}}> {errors.customer.address.city.message} </FormHelperText>
-                        }        */}
+                        }       
 
                         <Controller
                             name="customer.address.state"
@@ -103,9 +105,9 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                 />
                             )}
                         />      
-                        {/* { errors.customer.address.state &&  
+                        { errors.customer?.address?.state &&  
                             <FormHelperText error   sx={{mb:2}}> {errors.customer.address.state.message} </FormHelperText>
-                        }   */}
+                        }  
 
                         <Controller
                             name="customer.address.zipCode"
@@ -126,9 +128,9 @@ const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBa
                                 />
                             )}
                         />
-                        {/* { errors.customer.address.zipCode &&  
+                        { errors.customer?.address?.zipCode &&  
                             <FormHelperText error>{errors.customer.address.zipCode.message} </FormHelperText>                            
-                        }  */}
+                        } 
                         <Box sx={{mt:1,  display:'flex', flexDirection:'column' , justifyContent:'space-between'}}>
                             <Box >
                                 <Button

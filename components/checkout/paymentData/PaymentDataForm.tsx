@@ -5,7 +5,8 @@ import {
     FormHelperText,
     Grid,
 } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import { Controller, useFormContext, useFormState } from "react-hook-form";
 interface PaymentDataFormProps {
     onPreviousStep: () => void;
     handleFormSubmit: any;
@@ -13,7 +14,8 @@ interface PaymentDataFormProps {
 
 const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handleFormSubmit,  }) => {
     
-    const { control, handleSubmit, formState: { errors }, } = useFormContext();
+    const { control, handleSubmit} = useFormContext();
+    const { errors } = useFormState<CheckoutInput>();
 
     return (
         <Grid container justifyContent="center">
@@ -44,11 +46,11 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handl
                 />
                 )}
             />
-            {/* {errors?.card.number && (
+            {errors?.card?.number && (
                 <FormHelperText error sx={{ mb: 2 }}>
                 {errors.card.number.message}
                 </FormHelperText>
-            )} */}
+            )}
             <Controller
                 name="card.nameOnCard"
                 control={control}
@@ -74,11 +76,11 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handl
                 />
                 )}
             />
-            {/* {errors.card.nameOnCard && (
+            {errors.card?.nameOnCard && (
                 <FormHelperText error sx={{ mb: 2 }}>
                 {errors.card.nameOnCard.message}
                 </FormHelperText>
-            )} */}
+            )}
             <Controller
                 name="card.expDate"
                 control={control}
@@ -100,11 +102,11 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handl
                 />
                 )}
             />
-            {/* {errors.card.expDate && (
+            {errors.card?.expDate && (
                 <FormHelperText error sx={{ mb: 2 }}>
                 {errors.card.expDate.message}
                 </FormHelperText>
-            )} */}
+            )}
 
             <Controller
                 name="card.cvc"
@@ -132,11 +134,11 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handl
                 />
                 )}
             />
-            {/* {errors.card.cvc && (
+            {errors.card?.cvc && (
                 <FormHelperText error sx={{ mb: 2 }}>
                 {errors.card.cvc.message}
                 </FormHelperText>
-            )} */}
+            )}
             <Box
                 sx={{
                 mt: 1,
