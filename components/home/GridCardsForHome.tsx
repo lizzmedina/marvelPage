@@ -3,21 +3,20 @@ import CardHome, { CardHomeProps } from "./CardHome";
 
 interface HomeProps {
     comics: CardHomeProps[];
-}
+};
 
 const GridCardsForHome: React.FC<HomeProps> = ({ comics}) => {
-    
     
     return(
         <Container>
             <Grid container spacing={3}>
                 {comics.map((comic) => (
-                    <Grid item key={comic.id} xs={12} sm={6} md={4}>
+                    <Grid item key={comic.id} xs={12} sm={6} md={3}>
                         <CardHome id={comic.id} title={comic.title} image={comic.image} />
                     </Grid>
                 ))}
             </Grid>
         </Container>        
-    )
-}
+    );
+};
 export default GridCardsForHome;

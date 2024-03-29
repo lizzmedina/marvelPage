@@ -12,5 +12,5 @@ export const FaqsErrorFetch = ({error}:FaqsErrorProps) => {
                 <Typography color='error' component='p'>{error.message}</Typography>
             </BodySingle>                    
         </Box>         
-    )
-}
+    );
+};

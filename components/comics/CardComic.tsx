@@ -7,7 +7,7 @@ import Link from "next/link";
 
 interface ComicProps {
     comic: IComic;
-}
+};
 
 export const CardComic = ({ comic}: ComicProps) => {
 
@@ -18,7 +18,7 @@ export const CardComic = ({ comic}: ComicProps) => {
     const router = useRouter();
 
     const handleComicBuy = () => {
-        router.push(`/checkout`);
+        router.push(`/checkout/${comic.id}`);
     };
     const handleBack = () => {
         router.back();
@@ -114,22 +114,5 @@ export const CardComic = ({ comic}: ComicProps) => {
                 </Grid>
             </Grid>
         </BodySingle>
-    )
-}
-
-
-                                                    {/*<Grid item key={i} style={{ listStyleType: "none", marginRight: 10 }}>
-                                                    <Link href={`/personajes/${character.resourceURI.split("/").pop()}`} passHref>
-                                                            <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
-                                                        </Link>
-                                                    </Grid>*/}
-                                                
-                                                    {/*<Button 
-                                                    key={i} 
-                                                    onClick={() => handleCharacterDetail()} 
-                                                    size="small" 
-                                                    sx={{ '&:hover': {backgroundColor: '#bdbdbd',   } }} 
-                                                    color='primary' 
-                                                >
-                                                    <Typography component="a" variant="body2" sx={{ fontSize: isMobile ? 12 : 12 }}>{character.name}</Typography>
-                                                    </Button>*/}
+    );
+};

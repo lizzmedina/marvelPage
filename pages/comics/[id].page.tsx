@@ -22,10 +22,6 @@ const ComicPage: NextPage<ComicProps & { error?: string }> = ({ comic, error  })
         return <ErrorPage />;
     };
 
-    const handleCharactersDetail = (characterId: number) => {
-        router.push(`/personajes/${characterId}`);
-    };
-
     return (
         <LayoutGeneral title={`Comic ${comic.title}`} description="">
             <CardComic comic={comic}/>

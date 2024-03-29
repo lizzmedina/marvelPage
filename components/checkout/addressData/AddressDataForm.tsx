@@ -1,145 +1,161 @@
+import { Box,   TextField, Button, FormHelperText, Grid } from "@mui/material";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import {  Controller, useFormContext, useFormState} from "react-hook-form";
 
-import { Box, Paper, Typography, TextField, Button, FormHelperText, Grid } from "@mui/material";
-import { useRouter } from "next/router";
-import { useForm, Controller} from "react-hook-form"
-
-interface IAddressDataFormProps {
-    address: string,   
-    addressDetails?: string,
-    city: string,
-    provincia: string,
-    postalCode: string
-} ;
-interface FormProps {
-    onNextStep: () => void;
-    onPreviousStep?: () => void;
+interface AddressDataFormProps {
+    handleNext: () => void;
+    handleBack: () => void;
 };
-const AddressDataForm = ({ onNextStep, onPreviousStep }: FormProps) => {
 
-    const {control, handleSubmit, formState:{errors, isValid}} = useForm<IAddressDataFormProps>();
-    const router = useRouter();
+const AddressDataForm: React.FC<AddressDataFormProps> = ({  handleNext, handleBack }) => {
 
-    const onContinue = (data:IAddressDataFormProps) => {
-        console.log('probando el botón, data: ', data);        
-    };
+    const { control, handleSubmit} = useFormContext();
+    const { errors } = useFormState<CheckoutInput>();
+
 
     return(
         <Grid container justifyContent="center">
             <Grid item xs={12} md={10}>
-                    <Typography variant='h4' align="center"> Address information </Typography>
-                    <form onSubmit={handleSubmit(onContinue)}>
+                    <form onSubmit={handleSubmit(handleNext)}>
                         <Controller
-                            name="address"
+                            name="customer.address.address1"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            defaultValue=""
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='address'
+                                    {...field}
+                                    label="Dirección"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2,  mt: 2 }}
                                 />
                             )}
                         />
-                        { errors.address &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}
+                        { errors.customer?.address?.address1 &&  
+                            <FormHelperText error  sx={{mb:2}}>{errors.customer.address.address1.message} </FormHelperText>
+                        }
 
                         <Controller
-                            name="addressDetails"
+                            name="customer.address.address2"
                             control={control}
-                            rules={{required: false, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            defaultValue=""
+                            rules={{ 
+                                required: { value: false, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='addressDetail'
+                                    {...field}
+                                    label="Detalle de la dirección"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />
-                        { errors.addressDetails &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}   
+                        { errors.customer?.address?.address2 && 
+                            <FormHelperText error  sx={{mb:2}}> {errors.customer.address.address2.message} </FormHelperText>
+                        }   
 
                         <Controller
-                            name="city"
+                            name="customer.address.city"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            defaultValue=""
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='city'
+                                    {...field}
+                                    label="Ciudad"
                                     variant="outlined"
-                                    defaultValue=''
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />
-                        { errors.city &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}       
+                        { errors.customer?.address?.city && 
+                            <FormHelperText error  sx={{mb:2}}> {errors.customer.address.city.message} </FormHelperText>
+                        }       
 
                         <Controller
-                            name="provincia"
+                            name="customer.address.state"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            defaultValue=""
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='provincia'
+                                    {...field}
+                                    label="Estado / provincia"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />      
-                        { errors.provincia &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}  
+                        { errors.customer?.address?.state &&  
+                            <FormHelperText error   sx={{mb:2}}> {errors.customer.address.state.message} </FormHelperText>
+                        }  
 
                         <Controller
-                            name="postalCode"
+                            name="customer.address.zipCode"
                             control={control}
-                            rules={{required: true, maxLength: 20, minLength: 3}} 
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
+                            defaultValue=""
+                            rules={{ 
+                                required: { value: true, message: 'Este campo es obligatorio' },
+                                maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                                minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                            }}
+                            render={({ field }) => (
                                 <TextField
-                                    onChange={onChange} 
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}                            
-                                    type="text"
-                                    label='postalCode'
+                                    {...field}
+                                    label="Código postal"
                                     variant="outlined"
                                     fullWidth
-                                    sx={{mb:2}}
+                                    sx={{ mb: 2 }}
                                 />
                             )}
                         />
-                        { errors.postalCode &&  <FormHelperText error>Este campo es obligatorio</FormHelperText>}   
-
-                        <Box sx={{mt:3}}>
+                        { errors.customer?.address?.zipCode &&  
+                            <FormHelperText error>{errors.customer.address.zipCode.message} </FormHelperText>                            
+                        } 
+                        <Box sx={{mt:1,  display:'flex', flexDirection:'column' , justifyContent:'space-between'}}>
+                            <Box >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleBack}
+                                    fullWidth
+                                    sx={{mb:1}}
+                                >
+                                    Volver
+                                </Button>
+                            </Box>            
+                                <Box >
                                 <Button
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
                                     fullWidth
-                                    onClick={isValid ? onNextStep : undefined}
                                 >
-                                    Continuar
+                                    Siguiente
                                 </Button>
-                            </Box>            
+                            </Box>           
+                        </Box>
+                                        
                     </form>
             </Grid>
         </Grid>

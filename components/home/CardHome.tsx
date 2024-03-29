@@ -10,15 +10,16 @@ export interface CardHomeProps {
     id: number;
     title: string;
     image: string;
-}
+};
 const CardHome: React.FC<CardHomeProps> = ({ image, title, id }) => {
+    
     const router = useRouter();
 
     const handleComicDetail = () => {
         router.push(`/comics/${id}`);
     };
     const handleComicBuy = () => {
-        router.push(`/checkout`);
+        router.push(`/checkout/${id}`);
     };
 
     return (

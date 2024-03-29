@@ -38,7 +38,7 @@ export const Faqs = ({ faqs }: Props) => {
                         </Accordion>
                     </Box>
                 ))
-            }
+            };
         </BodySingle>    
-    )
-}
+    );
+};

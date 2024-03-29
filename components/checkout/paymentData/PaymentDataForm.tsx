@@ -1,162 +1,177 @@
 import {
     Box,
-    Paper,
-    Typography,
     TextField,
     Button,
     FormHelperText,
     Grid,
 } from "@mui/material";
-import { useRouter } from "next/router";
-import { useForm, Controller } from "react-hook-form";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import { Controller, useFormContext, useFormState } from "react-hook-form";
+interface PaymentDataFormProps {
+    onPreviousStep: () => void;
+    handleFormSubmit: any;
+};
 
-interface IPaymentDataFormProps {
-  cardNumber: number;
-  userName: string;
-  expirationDate: Date;
-  securityCode: string;
-}
-interface FormProps {
-    onPreviousStep?: () => void;
-}
+const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handleFormSubmit,  }) => {
+    
+    const { control, handleSubmit} = useFormContext();
+    const { errors } = useFormState<CheckoutInput>();
 
-const PaymentDataForm = ({ onPreviousStep }: FormProps) => {
-
-    const {control,handleSubmit,formState: { errors, isValid },} = useForm<IPaymentDataFormProps>();
-    const router = useRouter();
-
-    const onSubmit = (data: IPaymentDataFormProps) => {
-        console.log("probando el botón, data: ", data);
-    };
-
-    const handleBuyClick = () => {
-        isValid && router.push(`/confirmacion-compra`);
-    };
     return (
         <Grid container justifyContent="center">
-            <Grid item xs={12} md={10}>
-                <Typography variant="h4" align="center">
-                    Buy now
-                </Typography>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Controller
-                            name="cardNumber"
-                            control={control}
-                            rules={{ required: true, maxLength: 20, minLength: 3 }}
-                            render={({
-                                field: { onChange, onBlur, value, ref },
-                                formState,
-                                fieldState,
-                            }) => (
-                                <TextField
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                value={value}
-                                ref={ref}
-                                type="number"
-                                label="cardNumber"
-                                variant="outlined"
-                                fullWidth
-                                sx={{ mb: 2 }}
-                                />
-                            )}
-                    />
-                    {errors.cardNumber && (
-                        <FormHelperText error sx={{mb:2}}>Este campo es obligatorio</FormHelperText>
-                    )}
-                    <Controller
-                        name="userName"
-                        control={control}
-                        rules={{ required: true, maxLength: 20, minLength: 6 }}
-                        render={({
-                            field: { onChange, onBlur, value, ref },
-                            formState,
-                            fieldState,
-                        }) => (
-                            <TextField
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            value={value}
-                            ref={ref}
-                            type="text"
-                            label="userName"
-                            variant="outlined"
-                            fullWidth
-                            sx={{ mb: 2 }}
-                            />
-                        )}
-                    />
-                    {errors.userName && (
-                    <FormHelperText error sx={{mb:2}}>Este campo es obligatorio</FormHelperText>
-                    )}
-                    <Controller
-                        name="expirationDate"
-                        control={control}
-                        rules={{
-                            required: true,
-                            pattern: /^((0[1-9])|(1[0-2]))\/((2[2-9])|([3-9][0-9]))$/,
-                        }}
-                        render={({
-                            field: { onChange, onBlur, value, ref },
-                            formState,
-                            fieldState,
-                        }) => (
-                            <TextField
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            value={value}
-                            ref={ref}
-                            type="text"
-                            label="expirationDate"
-                            variant="outlined"
-                            fullWidth
-                            sx={{ mb: 2 }}
-                            />
-                        )}
-                    />
-                    {errors.expirationDate && (
-                    <FormHelperText error sx={{mb:2}}>Formato fecha Mes/año, ej: 02/24 </FormHelperText>
-                    )}
+        <Grid item xs={12} md={10}>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <Controller
+                name="card.number"
+                control={control}
+                defaultValue=""
+                rules={{
+                required: { value: true, message: "Este campo es obligatorio" },
+                maxLength: {
+                    value: 20,
+                    message: "El valor ingresado es demasiado largo",
+                },
+                minLength: {
+                    value: 14,
+                    message: "El valor ingresado es demasiado corto",
+                },
+                }}
+                render={({ field }) => (
+                <TextField
+                    {...field}
+                    label="Numero de tarjeta"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                />
+                )}
+            />
+            {errors?.card?.number && (
+                <FormHelperText error sx={{ mb: 2 }}>
+                {errors.card.number.message}
+                </FormHelperText>
+            )}
+            <Controller
+                name="card.nameOnCard"
+                control={control}
+                defaultValue=""
+                rules={{
+                required: { value: true, message: "Este campo es obligatorio" },
+                maxLength: {
+                    value: 20,
+                    message: "El valor ingresado es demasiado largo",
+                },
+                minLength: {
+                    value: 3,
+                    message: "El valor ingresado es demasiado corto",
+                },
+                }}
+                render={({ field }) => (
+                <TextField
+                    {...field}
+                    label="Nombre igual que en la tarjeta"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                />
+                )}
+            />
+            {errors.card?.nameOnCard && (
+                <FormHelperText error sx={{ mb: 2 }}>
+                {errors.card.nameOnCard.message}
+                </FormHelperText>
+            )}
+            <Controller
+                name="card.expDate"
+                control={control}
+                defaultValue=""
+                rules={{
+                required: { value: true, message: "Este campo es obligatorio" },
+                pattern: {
+                    value: /^((0[1-9])|(1[0-2]))\/((2[2-9])|([3-9][0-9]))$/,
+                    message: "El formato de fecha de expiración no es válido",
+                },
+                }}
+                render={({ field }) => (
+                <TextField
+                    {...field}
+                    label="Fecha de expiración (MM/YY)"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                />
+                )}
+            />
+            {errors.card?.expDate && (
+                <FormHelperText error sx={{ mb: 2 }}>
+                {errors.card.expDate.message}
+                </FormHelperText>
+            )}
 
-                    <Controller
-                        name="securityCode"
-                        control={control}
-                        render={({
-                            field: { onChange, onBlur, value, ref },
-                            formState,
-                            fieldState,
-                        }) => (
-                            <TextField
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            value={value}
-                            ref={ref}
-                            type="password"
-                            label="securityCode"
-                            variant="outlined"
-                            fullWidth
-                            sx={{ mb: 2 }}
-                            />
-                        )}
-                    />
-                    {errors.securityCode && (
-                    <FormHelperText error sx={{mb:2}}>Este campo es obligatorio</FormHelperText>
-                    )}
-
-                    <Box sx={{ mt: 3 }}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="secondary"
-                        fullWidth
-                        onClick={isValid ? handleBuyClick : undefined}
-                    >
-                        Comprar
-                    </Button>
-                    </Box>
-                </form>
-            </Grid>
-        </Grid>       
+            <Controller
+                name="card.cvc"
+                control={control}
+                defaultValue=""
+                rules={{
+                required: { value: true, message: "Este campo es obligatorio" },
+                maxLength: {
+                    value: 3,
+                    message: "El valor ingresado es demasiado largo",
+                },
+                minLength: {
+                    value: 3,
+                    message: "El valor ingresado es demasiado corto",
+                },
+                }}
+                render={({ field }) => (
+                <TextField
+                    {...field}
+                    label="Código de seguridad (CVC)"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                />
+                )}
+            />
+            {errors.card?.cvc && (
+                <FormHelperText error sx={{ mb: 2 }}>
+                {errors.card.cvc.message}
+                </FormHelperText>
+            )}
+            <Box
+                sx={{
+                mt: 1,
+                display: "flex",
+                flexWrap: "wrap",
+                flexDirection:'column',
+                justifyContent: "space-between",
+                }}
+            >
+                <Box>
+                <Button
+                    variant="contained"                   
+                    onClick={onPreviousStep}
+                    sx={{ mb: 2,  color: "white", border: "1px solid" }}
+                    fullWidth
+                >
+                    Volver
+                </Button>
+                </Box>
+                <Box>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                >
+                    Comprar
+                </Button>
+                </Box>
+            </Box>
+            </form>
+        </Grid>
+        </Grid>
     );
 };
 export default PaymentDataForm;

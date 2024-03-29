@@ -1,129 +1,104 @@
-import {
-  Box,
-  TextField,
-  Button,
-  FormHelperText,
-  Grid,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { useForm, Controller } from "react-hook-form";
+import { Message } from "@mui/icons-material";
+import { Box, TextField, Button, FormHelperText, Grid } from "@mui/material";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
+import { Controller, useFormContext, useFormState } from "react-hook-form";
 
-interface IPersonalDataFormProps {
-    name: string;
-    lastName: string;
-    email: string;
-};
-interface FormProps {
-    onNextStep: () => void;
-    onPreviousStep?: () => void;
+interface PersonalDataFormProps {
+    handleNext: () => void;
 };
 
-const PersonalDataForm = ({ onNextStep }: FormProps) => {
+const PersonalDataForm = ({handleNext}: PersonalDataFormProps) => {
+
+    const { control, handleSubmit} =useFormContext();
     
-    const {
-        control,
-        handleSubmit,
-        formState: { errors, isValid },
-        getValues,
-        watch,
-    } = useForm<IPersonalDataFormProps>();
-
-    const router = useRouter();
-
-    const onContinue = (data: IPersonalDataFormProps) => {
-        console.log("probando el botón, data: ", data);
-    };
-
-    const handleBack = () => {
-        router.back();
-    };
-
+    const { errors } = useFormState<CheckoutInput>();
+                
     return (
         <Grid container justifyContent="center">
-        <Grid item xs={12} md={10}>
-            <form onSubmit={handleSubmit(onContinue)}>
-                <Controller
-                    name="name"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: true, maxLength: 20, minLength: 3 }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <TextField
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        type="text"
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 2 }}
-                    />
-                    )}
-                />
-                {errors.name && (
-                    <FormHelperText error>Este campo es obligatorio</FormHelperText>
-                )}
+            <Grid item xs={12} md={10}>
+                <form onSubmit={handleSubmit(handleNext)}>
+                    
+                        <Controller
+                        name="customer.name"
+                        control={control}
+                        defaultValue=''       
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                            minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                        }}
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Name"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}                           
+                        />
+                        )}    
+                    />    
+                    {errors.customer?.name && (
+                        <FormHelperText error sx={{mb:2}}>{errors.customer?.name .message}</FormHelperText>
+                    )}              
 
-                <Controller
-                    name="lastName"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: true, maxLength: 20, minLength: 3 }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <TextField
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        type="text"
-                        label="Lastname"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 2 }}
+                    <Controller
+                        name="customer.lastname"
+                        control={control}
+                        defaultValue=""
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            maxLength: { value: 20, message: 'El valor ingresado es demasiado largo' },
+                            minLength: { value: 3, message: 'El valor ingresado es demasiado corto' }
+                        }}
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Last Name"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}
+                        />
+                        )}
                     />
+                    {errors.customer?.lastname && (
+                        <FormHelperText error sx={{mb:2}}>{errors.customer.lastname?.message}</FormHelperText>
                     )}
-                />
-                {errors.lastName && (
-                    <FormHelperText error>Este campo es obligatorio</FormHelperText>
-                )}
 
-                <Controller
-                    name="email"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <TextField
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        ref={ref}
-                        type="email"
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mb: 2 }}
+                    <Controller
+                        name="customer.email"
+                        control={control}
+                        defaultValue=''
+                        rules={{ 
+                            required: { value: true, message: 'Este campo es obligatorio' },
+                            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'El formato del campo no es válido' }
+                        }}
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            type="text"
+                            label="Email"
+                            variant="outlined"
+                            fullWidth
+                            sx={{ mb: 2 }}
+                        />
+                        )}
                     />
-                    )}
-                />
-                {errors.email && (
-                    <FormHelperText error>Este campo es obligatorio</FormHelperText>
-                )}
+                    {errors.customer?.email && (
+                        <FormHelperText error sx={{mb:2}}> {errors.customer.email.message} </FormHelperText>
+                    )}            
 
-                <Box mt={2} display="flex" justifyContent="space-between">                    
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="secondary"
-                        fullWidth
-                        onClick={isValid ? onNextStep : undefined}
-                    >
-                        Continuar
-                    </Button>
-                </Box>
-            </form>
-        </Grid>
+                    <Box sx={{ mt: 3 }}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                        >
+                            Siguiente
+                        </Button>
+                    </Box>        
+                </form>
+            </Grid>
         </Grid>
     );
 };

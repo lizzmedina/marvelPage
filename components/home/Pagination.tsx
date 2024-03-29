@@ -4,9 +4,10 @@ import { useRouter } from 'next/router';
 interface PaginationProps {
     totalItems: number;
     itemsPerPage: number;
-}
+};
 
 const PaginationComponent: React.FC<PaginationProps> = ({ totalItems, itemsPerPage }) => {
+    
     const router = useRouter();
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {

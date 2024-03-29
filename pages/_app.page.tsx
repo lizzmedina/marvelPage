@@ -20,3 +20,4 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp;
+// porner useContext -> para almacenar la data de los form  y posiblemente del comic
