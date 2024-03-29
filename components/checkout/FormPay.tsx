@@ -22,58 +22,6 @@ import CheckoutCard from "./CheckoutCard";
 import * as yup from "yup";
 const steps = ["Personal Data", "Address Data", "Payment Data"];
 
-// export interface DefaultValues {
-//     customer: {
-//         name: string;
-//         lastname: string;
-//         email: string;
-//     };
-//     address: {
-//         address1: string;
-//         address2: string;
-//         city: string;
-//         state: string;
-//         zipCode: string;
-//     };
-//     card: {
-//         number: string;
-//         cvc: string;
-//         expDate: string;
-//         nameOnCard: string;
-//     };
-//     order: {
-//         name: string,
-//         image: string,
-//         price: number
-//     }
-// };
-
-// const defaultValues: DefaultValues = {
-//     customer: {
-//         name: "",
-//         lastname: "",
-//         email: "",
-//     },
-//     address: {
-//         address1: "",
-//         address2: "",
-//         city: "",
-//         state: "",
-//         zipCode: "",
-//     },
-//     card: {
-//         number: "",
-//         cvc: "",
-//         expDate: "",
-//         nameOnCard: "",
-//     },
-//     order: {
-//         name: "",
-//         image: "",
-//         price: 0
-//     },
-// };
-
 interface FormPayProps {
     defaultValues: CheckoutInput;
 };
@@ -113,7 +61,6 @@ const FormPay: React.FC<FormPayProps> = ({ defaultValues }) => {
 
     const handleFormSubmit  = async (data: CheckoutInput) => {
         
-        //console.log(comicData?.thumbnail.path.concat( ".",  comicData?.thumbnail.extension ));
         const { card, ...restData } = data;
         const filteredData: CheckoutInput = {
         ...restData,
