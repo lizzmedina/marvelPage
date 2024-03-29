@@ -95,7 +95,7 @@ const PaymentDataForm: React.FC<PaymentDataFormProps> = ({onPreviousStep,  handl
                 render={({ field }) => (
                 <TextField
                     {...field}
-                    label="Fecha de expiración (MM/YY)"
+                    label="Fecha de expiración (MM/YY), Ej: 09/28"
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 2 }}
