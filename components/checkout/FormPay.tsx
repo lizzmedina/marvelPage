@@ -76,17 +76,15 @@ const steps = ["Personal Data", "Address Data", "Payment Data"];
 
 interface FormPayProps {
     defaultValues: CheckoutInput;
-}
-
-
+};
 
 const FormPay: React.FC<FormPayProps> = ({ defaultValues }) => {
+
     const route = useRouter();
     const [activeStep, setActiveStep] = useState(0);
     const methods = useForm<CheckoutInput>({ defaultValues });
     const comicId = route.query.id as string;
     const [comicData, setComicData] = useState<IComic | null>(null);
-    //const [checkoutData, setCheckoutData] = useState<DefaultValues>(defaultValues)
     const [query, setQuery] = useState(comicId);
 
     useEffect(() => {
@@ -115,7 +113,7 @@ const FormPay: React.FC<FormPayProps> = ({ defaultValues }) => {
 
     const handleFormSubmit  = async (data: CheckoutInput) => {
         
-        //console.log(data);
+        //console.log(comicData?.thumbnail.path.concat( ".",  comicData?.thumbnail.extension ));
         const { card, ...restData } = data;
         const filteredData: CheckoutInput = {
         ...restData,
@@ -125,11 +123,7 @@ const FormPay: React.FC<FormPayProps> = ({ defaultValues }) => {
         },
         order: {
             name: comicData?.title || "",
-            image:
-            comicData?.thumbnail.path.concat(
-                ".",
-                comicData?.thumbnail.extension
-            ) || "",
+            image: comicData?.thumbnail.path.concat( ".",  comicData?.thumbnail.extension ) || "",
             price: comicData?.price || 0,
         },
         };
@@ -164,28 +158,25 @@ const FormPay: React.FC<FormPayProps> = ({ defaultValues }) => {
         },
         "/confirmacion-compra"
         );
-        // postCheckOut(data);
-        return;
-        // postCheckOut(data);
-        // fetch('/api/checkout.route', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data),
-        // })
-        // .then(response => {
-        //     if (!response.ok) {
-        //         throw new Error('Network response was not ok');
-        //     }
-        //     return response.json();
-        // })
-        // .then(data => {
-        //     route.push(`/confirmacion-compra`);
-        // })
-        // .catch(error => {
-        //     console.error('There was an error!', error);
-        // });
+        fetch('/api/checkout.route', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            route.push(`/confirmacion-compra`);
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
     };
 
     return (
@@ -258,10 +249,10 @@ const FormPay: React.FC<FormPayProps> = ({ defaultValues }) => {
     );
 };
 interface FormContentProps {
-  activeStep: number;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleFormSubmit: (data: CheckoutInput) => void;
+    activeStep: number;
+    handleNext: () => void;
+    handleBack: () => void;
+    handleFormSubmit: (data: CheckoutInput) => void;
 }
 
 const FormContent: React.FC<FormContentProps> = ({
